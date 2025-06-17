@@ -1,4 +1,4 @@
-# PPEB-cr (Pi Pico W Peripheral Expansion Box)  
+# PPEB-cr (formal name: Pi Pico W Peripheral Expansion Box Side Port Device)  
 *Complete Build & User Manual — TI-99/4A Sideport Expansion*
 
 ## *THIS IS DRAFT and I accept merge requests with corrections to fix mistakes.*
