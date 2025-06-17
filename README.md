@@ -273,11 +273,11 @@ Future updates may simply involve replacing files on the MicroSD card.
 
 ## 🗃 Firmware Package Contents
 
-From the `PPEB2 (1).zip` package you received, you should have:
+From the `PPEB2.zip` package with the UF2 firmware file you received, you should have:
 
 | File / Folder | Purpose |
 |----------------|---------|
-| `PPEB.uf2` | Main firmware binary |
+| `PPEB.uf2` | Main firmware binary (can be named something else, but will have .uf2 at the end |
 | `/CART/` | Cartridge ROM files |
 | `/DSK/` | Disk image examples |
 | `PCode.ROM` / `PCode.GRM` | PCode card support |
@@ -392,7 +392,7 @@ This section provides a complete guide to:
 
 ## 📂 SD Card File Structure
 
-Your SD card root should contain the following folders and files:
+Your SD card root should contain the following folders and files.  They can be obtained from the AtariAge comment that is [current as of the writing of this document](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111).
 
 ```
 /
