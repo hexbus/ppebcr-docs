@@ -430,7 +430,7 @@ The P-Code specific files are here:
 - `PCode.ROM` — 12KB UCSD PCode ROM image
 - `PCode.GRM` — 62KB or 64KB PCode GROM image
 
-> These files must reside in the **root** of the SD card if you wish to use PCode mode.
+> NOTE THAT P-CODE files must reside in the **root** of the SD card if you wish to use PCode mode.
 
 ---
 
