@@ -299,7 +299,7 @@ From the `PPEB2 (1).zip` package you received, you should have:
 
 ### 2️⃣ Flash UF2 Firmware
 
-- Copy the file `PPEB.uf2` directly onto the Pico’s USB drive.
+- Copy the file `PPEB.uf2` directly onto the Pico’s USB drive.  These files are only [located on AtariAge](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111).
 - After the file copies, the Pico will automatically reboot into PPEB-cr mode.
 
 ### 3️⃣ Disconnect
@@ -1331,19 +1331,31 @@ This documentation consolidates knowledge drawn directly from the original Atari
 
 - **Main AtariAge PPEB-cr Development Thread:**  
   [https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/)
-
+  - Warning: This thread has information very distributed throughout, which is why this document was created.
+ 
 ---
 
 ## 🧑‍💻 Core Firmware Development
 
 - **JasonACT (AtariAge)**  
   - Author of the original Pi Pico W PEB firmware.  
-  - Creator of the PPEB2.ino system.  
-  - Maintainer of ongoing firmware updates and feature expansions.
+  - Creator of the software build that derived from the TIPI project.  
+  - Maintainer of ongoing firmware updates and feature expansions (only software, not hardware)
+  - October 2024 Source code release: [https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#comment-5549700](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#comment-5549700)
+    
+- **Latest Firmware Build (Page 28 Post #5639111):**  
+  - [https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#comment-5639111](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111)
+  - Other important dates for files in the thread by Jason:
+    - PPEB2NW.ino.zip = April 4  (New Console Tester)
+    - PPEB2.zip       = March 23 (SPEECH & ALPHON)
+    - PPEB2.zip       = Feb 2  (dabone reset)
+    - PPEB2.zip       = Jan 26 (dabone suggestions)
+    - PICOPEBG.zip    = Jan 21 (Basic program with menu)
 
-- **Latest Firmware Build (Page 28 Post #5616188):**  
-  [https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#comment-5616188](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#comment-5616188)
-
+- **JediMatt (GitHub)**
+  - Original TIPI author
+  - Github repo: [TIPI](https://github.com/jedimatt42/tipi)
+    
 ---
 
 ## 🛠 Hardware Design & Board Work
@@ -1351,11 +1363,11 @@ This documentation consolidates knowledge drawn directly from the original Atari
 - **dabone (David / dabonetn)**  
   - Surface-mount PPEB-cr redesign (PPEB3-SMD v3.2a)  
   - KiCAD PCB layouts & production Gerbers  
-  - Hardware builder support
+  - Hardware builder support only, but knows some of the software.
 
-- **Gerber Files & Board Release (Page 22 Post #5549700):**  
-  [https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#comment-5549700](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#comment-5549700)
-
+- **Gerber Files & Board Release:**  
+  - Github repo: [ppeb-cr](https://github.com/dabonetn/ppeb-cr)
+    
 - **RickyDean, Shift838, dhe, visrealm**  
   - Board assembly, hardware variant testing, firmware validation
 
@@ -1366,9 +1378,8 @@ This documentation consolidates knowledge drawn directly from the original Atari
 - **PPZ-00 & dabone (AtariAge)**  
   - STL file design for printable enclosures  
   - Iterative community case design adjustments
-
-- **STL Case Files Discussion (Page 31 Post #5657718):**  
-  [https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/31/#comment-5657718](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/31/#comment-5657718)
+  - https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/30/#findComment-5653770
+  - https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/27/#findComment-5610718
 
 ---
 
@@ -1394,4 +1405,3 @@ This documentation consolidates knowledge drawn directly from the original Atari
   - For their deep technical knowledge, real-world testing, and long-term commitment to keeping the TI-99/4A community alive and growing.
 
 ---
-
