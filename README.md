@@ -1392,10 +1392,10 @@ This documentation consolidates knowledge drawn directly from the original Atari
 
 ## ✍ Documentation Assembly
 
-- **Acadiel (Jon Guidry)**  
+- **Acadiel (or Hexbus) (Jon Guidry)**  
   - Full PPEB-cr documentation authoring  
   - GitHub-ready Markdown conversion  
-  - Community archival release packaging
+  - Community archival release packaging - it's what I do :)
 
 ---
 
