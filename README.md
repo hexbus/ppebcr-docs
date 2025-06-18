@@ -27,7 +27,7 @@
 
 ## Project Overview
 
-[**PPEB-cr**](https://github.com/dabonetn/ppeb-cr) is a fully integrated, all-in-one expansion solution for the TI-99/4A home computer.  
+[**PPEB**] is a fully integrated, all-in-one expansion solution for the TI-99/4A home computer.  
 Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and peripherals inside one modern sideport device:
 
 - Speech Synthesizer (PWM Emulated)
