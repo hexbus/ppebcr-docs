@@ -32,7 +32,7 @@ Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and 
 
 - Speech Synthesizer (PWM Emulated)
 - 32K RAM Expansion
-- SAMS Memory (1MB/8MB PSRAM)
+- SAMS Memory (2MB/8MB PSRAM)
 - Myarc RAM (512K)
 - Cartridge GROM/GRAM loader
 - Disk Controller with .DSK sector image support
@@ -69,14 +69,16 @@ This documentation provides a **turnkey build guide**, full feature reference, w
 | Component | Description | Notes |
 |-----------|-------------|-------|
 | **PPEB-cr PCB** | v3.x Board Design | Provided as KiCAD/Gerber files |
-| **Raspberry Pi Pico W** | Main processor | Must be Pico W version |
-| **PSRAM Module** | 8MB (2x 4MB chips recommended) | Verified with memory tester |
+| **Raspberry Pi Pico W** | Main processor | Must be Pico W version | SC0918 |
+| **PSRAM Module** | 8MB (2x 8MB chips needed for 8MB Sams, 2MB if you want to add rs232) | APS6404L-3SQR-SN |
+| **Reset Button** | Optional | Allows External reset |
+| **Sideport Edge Connector** | TI-99/4A sideport interface | 5530843-4 |
+| **Female USB Connector** | Single Through Hole USB 2.0 Female Connector | GSB12121031EU |
 | **MicroSD Card** | FAT32 formatted | 8GB or larger recommended |
-| **SD Socket** | Surface-mount or vertical adapter | Mounted directly to PCB |
-| **Reset Button** | Optional | Allows external reset |
-| **Sideport Edge Connector** | TI-99/4A sideport interface | Keyed to TI-99 bus |
-| **GPIO Headers** | As per PCB design | Standard 0.1" pitch headers |
-| **Audio Output Jack** | Optional | For speech synthesizer audio |
+
+## Optional Hardware
+| Component | Description | Notes |
+|-----------|-------------|-------|
 | **USB Hub (optional)** | External powered hub | For keyboard, mouse, USB storage |
 | **RS232 Wiring (optional)** | 3.3V logic level breakout | GP8 = TX, GP9 = RX |
 | **3D Printed Case** | PPEB-cr Enclosure | STL files provided |
@@ -85,16 +87,10 @@ This documentation provides a **turnkey build guide**, full feature reference, w
 
 ## Special Build Notes
 
-- 🛠 **C4 Capacitor Removal:**  
-  On earlier boards (including some unbuilt kits), **C4 must be removed** for SD card compatibility.  
-  This resolves voltage instability on certain SD card models.
-
-- 🛠 **Speech Synthesizer Wiring:**  
-  Audio output is produced via PWM from the Pico and routed through a passive RC filter to an audio jack.  
-  This is optional but recommended for full functionality.
 
 - 🛠 **RS232 Support:**  
   RS232 is provided via the Pico W's second UART at 3.3V logic levels.  
+  Not compatible with 8MB memory for Sams.
   If you require RS232 output, connect:
   - `GP8 → TX`
   - `GP9 → RX`
@@ -104,6 +100,9 @@ This documentation provides a **turnkey build guide**, full feature reference, w
   Many random lockups have been traced to marginal regulators or aged power bricks.  
   If experiencing intermittent behavior, verify or recap your TI power supply.
 
+- 🛠 **C4 Capacitor Removal:**  
+  On the first relase of the SMD based boards, **C4 must be removed** for SD card compatibility.  
+  
 ---
 
 ## What This Manual Provides
@@ -135,116 +134,130 @@ This section covers hardware assembly of the PPEB-cr device, including:
 - Optional features (speech output, RS232)
 - Final build checklist
 
-The assembly process assumes you're using the **v3.2a PPEB3-SMD board revision** provided in the included KiCAD and Gerber files.
 
----
+
+# This assembly process is for the PPEB3-cr SMD board version
+
+ The board will come with all the SMD components except the PSram if you order it assembled from JLCPCB.
+ (Sometimes they may have the psram, but it's been out of stock)
+
 
 ## ⚠️ Before You Start
 
 - Carefully inspect all PCB files before ordering your board.
 - Verify BOM and parts list — exact part sourcing may vary depending on vendor and regional availability.
 - Work on an ESD-safe work surface.
-- If unsure about SMD soldering, seek assistance — most components are 0603 or larger, but careful soldering is still required.
+- If unsure about SMD soldering, seek assistance.
 
 ---
 
 ## 🧰 Required Components
 
+| Quantity | Part | Notes | Part Number |
+|----------|------|-------|-------|
+| 1 | PPEB3-SMD v3.2a PCB | From provided KiCAD files |
+| 1 | Raspberry Pi Pico W | Main processor | SC0918 |
+| 2 | 8MB PSRAM  | 8MB or 16MB total (Up to 8MB usable on the TI)| APS6404L-3SQR-SN |
+| 1 | Edge Connector (TI Sideport) | 44-pin edge connector | 5530843-4 |
+| 1 | USB | Single Through Hole USB 2.0 Female Connector | GSB12121031EU |
+| 1 | Reset Button (optional) | Standard tactile switch | TS02-66-50-BK-100-LCR-D |
+
+## 🧰 Optional
 | Quantity | Part | Notes |
 |----------|------|-------|
-| 1 | PPEB3-SMD v3.2a PCB | From provided KiCAD files |
-| 1 | Raspberry Pi Pico W | Main processor |
-| 2 | 4MB PSRAM (Winbond or compatible) | 8MB total |
-| 1 | MicroSD Socket | Surface mount |
-| 1 | Edge Connector (TI Sideport) | 44-pin edge connector |
-| 1 | Reset Button (optional) | Standard tactile switch |
-| 1 | Audio Jack (optional) | For speech output |
-| 1 | Filter Capacitor Kit | As per BOM |
-| X | 0.1" Pin Headers | For Pico socket and other headers |
 | 1 | 3D Printed Case | STL files provided |
 
 ---
 
 ## 🔧 Build Procedure
 
----
 
-### 1️⃣ **Capacitor C4 Removal (IMPORTANT!)**
+### 1️⃣ **Pico W Installation**
 
-- The original design included capacitor C4.
-- **C4 must be omitted or removed** — this improves MicroSD card compatibility.
-- If you're assembling a blank board, simply leave C4 unpopulated.
-
----
-
-### 2️⃣ **Surface Mount Components**
-
-- Solder all SMD passives and ICs first.
-- Use solder paste and hot air station or fine-tipped iron for clean joints.
-- Confirm proper orientation of PSRAM chips.
-
----
-
-### 3️⃣ **Pico W Installation**
-
-- Install male 0.1" headers on the PCB.
-- Insert Pico W module onto the headers.
+- Pico W module solders to the board using the castellated edges on the Pico.
 - Verify correct alignment:
   - USB port facing rear of case
   - Pin 1 correctly oriented
+  - Apply soldering iron to the pcb and the edge of the pico, and apply solder.
 
 ---
 
-### 4️⃣ **Sideport Edge Connector**
+### 2️⃣ **PS Ram Installtion**
 
-- Insert 44-pin sideport edge connector carefully.
-- Apply even pressure to avoid bending pins.
-- Double-check pin alignment before soldering.
+- PS Ram is 8 Pin SOP , so surface mount skills are needed.
+- It requires u2 to be installed for standard operation, and that will give you 2MB Sams memory.
+- Install u7 for 8mb Sams Ram, or leave off if you are planning to as rs232.
+
+### 3️⃣ **Sideport Edge Connector**
+
+- Bend the pins on the edge connector in, using a flat surface like a table, they should look like a /\ with just enough room for the board to squeeze between the pins. (Tight is ok)
+- Slide the board into the 44-pin sideport edge connector carefully.
+- Check for bent pins, and try to align the board and edge connector in a straight line.
+- Solder the two opposite end pins on one side, then check to make sure the connector is straight with the board, then solder the other side. Then solder all the other connections on the connector.
 
 ---
 
-### 5️⃣ **Reset Button (Optional)**
+### 4️⃣ **Reset Button (Optional)**
 
 - Mount reset button on the PCB header.
-- Adjust reset pin height as necessary — PCB may lift slightly (~1.5mm) depending on switch body height.
-- Use spacers or shims if necessary to maintain flat PCB installation.
+- Cut the 2 pins close to the edge of the board flush before soldering.
+- Solder the connectors.
 
 ---
 
-### 6️⃣ **Audio Output (Optional Speech Synth)**
+### 5️⃣ **Rear USB Port (Optional)**
 
-- Install PWM audio output circuit:
-  - Wire Pico PWM GPIO to simple RC low-pass filter (2.2kΩ resistor + 0.1µF capacitor).
-  - Output filtered signal to 3.5mm audio jack mounted to case.
-- **Note:** Speech functionality still operates without hardware audio output — this only affects physical audio routing.
+- Install USB Connector
+  - Solder the 4 usb pins and the 2 support pins.
+  - Solder points tp2 and tp3 from the underside of the board to the underside of the pi pico. (This makes the actual USB connection to the rear)
+
+--- 
+
+### 6️⃣ **Remove C4**
+
+- If you have the original issue of the cr board, remove c4 (It's located near u7)
+
+---
+### 7️⃣ **Program the PICO**
+
+- Before installing into the case, be sure to program the Pi Pico W. (See firmware instructions below)
 
 ---
 
-### 7️⃣ **RS232 Breakout (Optional)**
+### 8️⃣ **RS232 Breakout (Optional)**
 
 - If RS232 functionality is desired:
-  - Wire `GP8 → TX` and `GP9 → RX` to external header.
+  - Wire `GP8 → TX` and `GP9 → RX` to external header along with Gnd. Gnd is available on several pins of the pico.
   - Voltage is 3.3V logic-level — external level shifter required if interfacing to legacy DB9 serial hardware.
 
 ---
 
-### 8️⃣ **Case Assembly**
+### 9️⃣ **Case Assembly**
 
 - Print STL files:
-  - `PPEB3-Simple Case-top-flat.stl`
-  - `PPEB3-Simple Case-bottom-flat.stl`
-- Use M3x10 screws to secure PCB inside case.
-- Ensure SD card slot, reset button, and USB ports are accessible.
-- Top and bottom snap together with alignment posts.
+  - `PPEBcr-CaseBottom.stl`
+  - This is used for either top.
+  - `PPEBcr-Button.stl`
+  - This is a very small print.. On a fast printer, either print a bunch, or find the slicer setting to set a minimum time per layer for good results.
+  
+  - Case Tops
+  
+  - `PPEBcr-CaseTop-M3-Nuts.stl`
+  - This uses m3 nuts forced into the print. Can work, but be careful when you tighten your screws as they will remove the nuts.
+  - `PPEBcr-CaseTop-HeatSetInserts.stl`
+  - This uses m3 inserts.
+  
+- Use M3x8 or M3x10 screws to secure PCB inside case for the insert case, for the M3 Nut version, it depends on how far down you put yours nuts.
+- Place the PCB into the lower case. There is a U shaped cutout in the board to help align.
+- Place the button in the hole, and then place to two case halves together and secure with the screws.
 
 ---
 
-### 9️⃣ **Final Inspection**
+# **Final Inspection**
 
 - Verify:
   - All solder joints are clean.
-  - No solder bridges between Pico pins.
-  - Edge connector firmly seated.
+  - No solder bridges between pins.
   - SD card socket functional.
   - Case fits without stress on PCB.
 - DO NOT power device until all checks complete.
@@ -293,6 +306,7 @@ From the `PPEB2.zip` package with the UF2 firmware file you received, you should
 
 ### 1️⃣ Connect Pico W
 
+- Do not have a Microsd card inserted.
 - Hold down the **BOOTSEL** button on your Pico W.
 - While holding the button, connect the Pico to your PC using a microUSB cable.
 - The Pico should appear as a USB mass storage device named **RPI-RP2**.
@@ -301,11 +315,8 @@ From the `PPEB2.zip` package with the UF2 firmware file you received, you should
 
 - Copy the file `PPEB.uf2` directly onto the Pico’s USB drive.  These files are only [located on AtariAge](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111).
 - After the file copies, the Pico will automatically reboot into PPEB-cr mode.
-
-### 3️⃣ Disconnect
-
-- Safely eject the Pico W from your PC.
-- Disconnect USB cable.
+- It should blink 3 times when powered with no microsd inserted.
+- It should blink once when powered n with a microsd card with the correct files is inserted.
 
 > ✅ Firmware is now installed and ready for use.
 
@@ -1360,7 +1371,7 @@ This documentation consolidates knowledge drawn directly from the original Atari
 
 ## 🛠 Hardware Design & Board Work
 
-- **dabone (David / dabonetn)**  
+- **dabone (Mark Ormond / dabonetn)**  
   - Surface-mount PPEB-cr redesign (PPEB3-SMD v3.2a)  
   - KiCAD PCB layouts & production Gerbers  
   - Hardware builder support only, but knows some of the software.
