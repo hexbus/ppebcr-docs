@@ -316,7 +316,7 @@ From the `PPEB2.zip` package with the UF2 firmware file you received, you should
 - Copy the file `PPEB.uf2` directly onto the Pico’s USB drive.  These files are only [located on AtariAge](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111).
 - After the file copies, the Pico will automatically reboot into PPEB-cr mode.
 - It should blink 3 times when powered with no microsd inserted.
-- It should blink once when powered n with a microsd card with the correct files is inserted.
+- It should blink once when powered on with a microsd card with the correct files is inserted.
 
 > ✅ Firmware is now installed and ready for use.
 
