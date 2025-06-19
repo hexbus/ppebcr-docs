@@ -160,7 +160,7 @@ This section covers hardware assembly of the PPEB-cr device, including:
 | 2 | 8MB PSRAM  | 8MB or 16MB total (Up to 8MB usable on the TI)| APS6404L-3SQR-SN |
 | 1 | Edge Connector (TI Sideport) | 44-pin edge connector | 5530843-4 |
 | 1 | USB | Single Through Hole USB 2.0 Female Connector | GSB12121031EU |
-| 1 | Reset Button (optional) | Standard tactile switch | TS02-66-50-BK-100-LCR-D |
+| 1 | Reset Button (optional) | Standard 6x6x5 tactile switch | TS02-66-50-BK-100-LCR-D |
 
 ## 🧰 Optional
 | Quantity | Part | Notes |
@@ -176,7 +176,7 @@ This section covers hardware assembly of the PPEB-cr device, including:
 
 - Pico W module solders to the board using the castellated edges on the Pico.
 - Verify correct alignment:
-  - USB port facing rear of case
+  - USB port facing front of board
   - Pin 1 correctly oriented
   - Apply soldering iron to the pcb and the edge of the pico, and apply solder.
 
