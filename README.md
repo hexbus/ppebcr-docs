@@ -983,7 +983,7 @@ The case design protects the PCB, provides proper mounting holes, and exposes:
 
 ## 🧰 Provided STL Files
 
-PPEB-cr Surface Mount Version (If not using inserts I recommend PPZ-00's Case)
+PPEB-cr Surface Mount Version
 
 [Click here for PPZ-00's Case Files](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/30/#findComment-5653770)  
 [Click Here for dabone's PPEB-cr Case Files](https://github.com/dabonetn/ppeb-cr/tree/main/STLs)
