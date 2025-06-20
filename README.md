@@ -94,9 +94,9 @@ The PPEB-cr project is built on the firmware by **JasonACT** with hardware modif
 
 There are 3 main versions of the PPEB.
 
-The original version with one PSRam Support for up to 2Mb Sams Memory  
-The updated v3 board with dual PSRam Support for up to 8Mb Sams Memory  
-The SMD version with dual PSRam support/ rear MicroSd - USB Ports.  
+The original version with one PSRam (2Mb Sams)
+The updated v3 board with dual PSRam (8Mb Sams)
+The SMD version with dual PSRam (8mb Sams), reset button, and rear mounted MicroSd and USB Ports.  
 
 ## Assembly Guides <a name="Assembly-Guides"></a>
 
