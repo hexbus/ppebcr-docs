@@ -46,7 +46,7 @@ Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and 
   
 <br>
 
-The PPEB-cr project is built on the firmware by **JasonACT** with hardware modifications by **dabone**, community contributions via AtariAge, and extensive testing by numerous TI-99 enthusiasts.
+The PPEB project is built on the firmware by **JasonACT** with hardware modifications by **dabone**, community contributions via AtariAge, and extensive testing by numerous TI-99 enthusiasts.
 
 ---
 
@@ -54,10 +54,10 @@ The PPEB-cr project is built on the firmware by **JasonACT** with hardware modif
 
 > **IMPORTANT — READ BEFORE USING OR BUILDING:**
 
-- ⚠️ **Never power the PPEB-cr through USB while it is connected to your TI-99/4A.**  
+- ⚠️ **Never power the PPEB through USB while it is connected to your TI-99/4A.**  
   The device draws power directly from the TI sideport. USB power while inserted can cause hardware damage.
   
-- ⚠️ **Always power down the TI-99/4A before inserting or removing the PPEB-cr.**  
+- ⚠️ **Always power down the TI-99/4A before inserting or removing the PPEB.**  
   Repeated insertion/removal while powered on can damage TI-99 side port buffer chips.
 
 - ⚠️ **The QI (Quality Improved) model of the TI-99/4A is not supported without hardware modifications.**  
@@ -66,7 +66,7 @@ The PPEB-cr project is built on the firmware by **JasonACT** with hardware modif
 
 
 - 🛠 **Power Supply Stability:**  
-  TI-99/4A power supply health is critical to PPEB-cr stability.  
+  TI-99/4A power supply health is critical to PPEB stability.  
   Many random lockups have been traced to marginal regulators or aged power bricks.  
   If experiencing intermittent behavior, verify or recap your TI power supply.
 
@@ -112,7 +112,7 @@ Here you will find the guides for the different versions of the PPEB pcbs.
 
 ## 📋 Overview
 
-The PPEB-cr uses custom firmware built for the Raspberry Pi Pico W, created by JasonACT and the AtariAge development community.
+The PPEB uses custom firmware built for the Raspberry Pi Pico W, created by JasonACT and the AtariAge development community.
 
 The firmware package includes:
 
@@ -157,7 +157,7 @@ From the `PPEB2.zip` package with the UF2 firmware file you received, you should
 
 - Pick the Correct Firmware for your device - If you have 1 PSRam, then select the 2mb version, 2 PSRams, select the 8mb version.
 - Copy the file `PPEB.uf2` directly onto the Pico’s USB drive.  These files are only [located on AtariAge](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111).
-- After the file copies, the Pico will automatically reboot into PPEB-cr mode.
+- After the file copies, the Pico will automatically reboot into PPEB mode.
 - It should blink 3 times when powered with no microsd inserted.
 - It should blink once when powered on with a microsd card with the correct files is inserted.
 
@@ -190,7 +190,7 @@ From the `PPEB2.zip` package with the UF2 firmware file you received, you should
 
 ## 📋 Overview
 
-The MicroSD card is absolutely essential to PPEB-cr operation.  
+The MicroSD card is absolutely essential to PPEB operation.  
 The device will not function properly without a properly prepared SD card inserted.
 
 This section provides a complete guide to:
@@ -319,9 +319,9 @@ HARDDISK2=harddisk2.dat
 
 Before first use:
 
-- Insert SD card into the fully assembled PPEB-cr unit.
+- Insert SD card into the fully assembled PPEB unit.
 - Apply power to TI-99/4A.
-- If `autoload.cfg` is valid, the PPEB-cr will initialize automatically.
+- If `autoload.cfg` is valid, the PPEB will initialize automatically.
 - Improper SD formatting is one of the most common causes of boot failure.
 
 ---
@@ -332,7 +332,7 @@ Before first use:
 
 ## 📋 Overview
 
-The `autoload.cfg` file controls nearly all PPEB-cr operating parameters.  
+The `autoload.cfg` file controls nearly all PPEB operating parameters.  
 It is read at startup from the **root directory** of the SD card.
 
 This section documents **all supported configuration fields**, derived directly from the firmware source (`PPEB2.ino`) and AtariAge thread discussions.
@@ -472,7 +472,7 @@ SNTP=pool.ntp.org
 
 ## 📋 Overview
 
-The PPEB-cr adds numerous device service routines (DSRs) and control commands accessible directly from TI BASIC, Extended BASIC, and Assembly programs.
+The PPEB adds numerous device service routines (DSRs) and control commands accessible directly from TI BASIC, Extended BASIC, and Assembly programs.
 
 This section documents all supported `CALL` commands.
 
@@ -579,7 +579,7 @@ This section documents all supported `CALL` commands.
 
 ## 📋 Overview
 
-The PPEB-cr supports IDE hard disk emulation through the use of USB storage devices.  
+The PPEB supports IDE hard disk emulation through the use of USB storage devices.  
 Unlike floppy disk image support (which uses the MicroSD), IDE emulation works **only via USB**.
 
 The IDE emulation replicates Myarc-style hard disk functionality for compatible TI disk managers and OS environments.
@@ -588,7 +588,7 @@ The IDE emulation replicates Myarc-style hard disk functionality for compatible 
 
 ## 🖧 Hardware Notes
 
-- IDE images must be stored on a USB memory stick attached to the PPEB-cr.
+- IDE images must be stored on a USB memory stick attached to the PPEB.
 - The Pico W enumerates the USB drive automatically on startup.
 - You may use a powered USB hub to allow multiple USB devices simultaneously (keyboard, mouse, joystick, USB drive).
 
@@ -648,7 +648,7 @@ HARDDISK2=harddisk2.dat
 | Image too large | Unsupported file size | Keep images ≤ 2GB |
 
 - Some USB hubs enumerate devices in varying orders — try swapping ports if devices conflict.
-- Always eject USB drive safely from PC before inserting into PPEB-cr.
+- Always eject USB drive safely from PC before inserting into PPEB.
 
 ---
 
@@ -872,7 +872,7 @@ BTJ1=01:23:45:67:89:AB
 
 - Devices must be paired externally (e.g. via Windows/Linux) to obtain MAC.
 
-- Once bound, PPEB-cr reconnects automatically at startup.
+- Once bound, PPEB reconnects automatically at startup.
 
 ---
 
@@ -882,7 +882,7 @@ BTJ1=01:23:45:67:89:AB
 
 ## 📋 Overview
 
-This section summarizes common problems, their likely causes, and solutions based on real-world PPEB-cr builder reports.
+This section summarizes common problems, their likely causes, and solutions based on real-world PPEB builder reports.
 
 ---
 
@@ -900,7 +900,7 @@ This section summarizes common problems, their likely causes, and solutions base
 
 | Symptom | Cause | Solution |
 |---------|-------|----------|
-| PPEB-cr not detected at all | Missing SD card or unreadable card | Verify card inserted; reformat as FAT32 (MBR). |
+| PPEB not detected at all | Missing SD card or unreadable card | Verify card inserted; reformat as FAT32 (MBR). |
 | Autoload failing | Corrupt or missing `autoload.cfg` | Verify syntax, file format (plain text). |
 | File not found errors | Incorrect directory structure | Verify SD card file/folder layout matches documentation. |
 | Random SD read failures | C4 capacitor still installed | **Remove C4** capacitor on PCB for full SD compatibility. |
@@ -969,7 +969,7 @@ This section summarizes common problems, their likely causes, and solutions base
 
 ## 📋 Overview
 
-The PPEB-cr hardware design includes printable STL files for a full enclosure, suitable for both home FDM printers and commercial 3D print services.
+The PPEB hardware design includes printable STL files for a full enclosure, suitable for both home FDM printers and commercial 3D print services.
 
 The case design protects the PCB, provides proper mounting holes, and exposes:
 
@@ -1097,7 +1097,7 @@ PPEB-cr Surface Mount Version
 
 ## 📋 Overview
 
-The PPEB-cr uses external PSRAM modules to enable SAMS and advanced memory features.
+The PPEB uses external PSRAM modules to enable SAMS and advanced memory features.
 
 Because PSRAM chips can vary significantly in timing tolerance, JasonACT developed a standalone memory test utility to validate stable operation at specific Pico clock speeds.
 
@@ -1108,13 +1108,13 @@ Because PSRAM chips can vary significantly in timing tolerance, JasonACT develop
 - File: `memtest2.uf2`
 - Delivered as: `memtest2.ino.uf2.zip` (extract before use)
 
-This is a standalone firmware image that runs on the Pico W outside of PPEB-cr firmware.
+This is a standalone firmware image that runs on the Pico W outside of PPEB firmware.
 
 ---
 
 ## 🖥 Flashing Procedure
 
-1. Disconnect Pico W from PPEB-cr board (or flash prior to full assembly).
+1. Disconnect Pico W from PPEB board (or flash prior to full assembly).
 2. Connect Pico W to PC via microUSB while holding **BOOTSEL** button.
 3. Copy `memtest2.uf2` to the Pico W mass storage device (`RPI-RP2`).
 4. Pico will reboot into the memory tester.
@@ -1151,7 +1151,7 @@ NOPSW=5
 
 - Lower `MHZ` values slow Pico clock speed for stability.
 - `NOPS` and `NOPSW` introduce deliberate read/write delays.
-- Use the memory test tool after adjustments to confirm stability before flashing final PPEB-cr firmware.
+- Use the memory test tool after adjustments to confirm stability before flashing final PPEB firmware.
 
 ---
 
@@ -1167,7 +1167,7 @@ NOPSW=5
 
 ---
 
-The PPEB-cr project exists thanks to the combined efforts of multiple builders, developers, testers, and community members who contributed code, hardware, documentation, and real-world feedback.
+The PPEB project exists thanks to the combined efforts of multiple builders, developers, testers, and community members who contributed code, hardware, documentation, and real-world feedback.
 
 This documentation consolidates knowledge drawn directly from the original AtariAge thread, firmware releases, hardware designs, and builder discussions.
 
@@ -1175,7 +1175,7 @@ This documentation consolidates knowledge drawn directly from the original Atari
 
 ## 🧑‍💻 Primary Development Thread
 
-- **Main AtariAge PPEB-cr Development Thread:**  
+- **Main AtariAge PPEB Development Thread:**  
   [https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/)
   - Warning: This thread has information very distributed throughout, which is why this document was created.
  
@@ -1239,7 +1239,7 @@ This documentation consolidates knowledge drawn directly from the original Atari
 ## ✍ Documentation Assembly
 
 - **Acadiel (or Hexbus) (Jon Guidry)**  
-  - Full PPEB-cr documentation authoring  
+  - Full PPEB documentation authoring  
   - GitHub-ready Markdown conversion  
   - Community archival release packaging - it's what I do :)
 
