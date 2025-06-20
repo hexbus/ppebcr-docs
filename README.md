@@ -1,4 +1,4 @@
-# PPEB-cr (formal name: Pi Pico W Peripheral Expansion Box Side Port Device)  
+# PPEB (formal name: Pi Pico W Peripheral Expansion Box Side Port Device)  
 *Complete Build & User Manual — TI-99/4A Sideport Expansion*
 
 ## *THIS IS DRAFT and I accept merge requests with corrections to fix mistakes.*
@@ -8,10 +8,8 @@
 
 - [Project Overview](#project-overview)  
 - [Safety Warnings](#safety-warnings)
-- [Hardware Requirements](#hardware-requirements)
-- [Special Build Notes](#special-build-notes)
 - [What This Manual Provides](#what-this-manual-provides)
-- [Assembly Instructions](#assembly-instructions)
+- [Assembly Guides](#Assembly-Guides)
 - [Firmware Installation](#firmware-installation)
 - [SD Card Preparation](#sd-card-preparation)
 - [Configuration File Reference (`autoload.cfg`)](#configuration-file-reference-autoloadcfg)
@@ -25,7 +23,9 @@
 - [Credits and Contributors](#credits-and-contributors)
 
 
-## Project Overview
+## Project Overview <a name="project-overview"></a>
+
+---
 
 [**PPEB**] is a fully integrated, all-in-one expansion solution for the TI-99/4A home computer.  
 Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and peripherals inside one modern sideport device:
@@ -42,14 +42,15 @@ Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and 
 - USB Keyboard, Mouse, Joystick, Bluetooth HID support
 - Math Co-Processor for accelerated floating-point math
 - Digi-Port 8-bit audio output support
+- RS232 Support is provided via the Pico W's second UART at 3.3V logic levels. Not compatible with 8MB memory for Sams.
+  
+<br>
 
 The PPEB-cr project is built on the firmware by **JasonACT** with hardware modifications by **dabone**, community contributions via AtariAge, and extensive testing by numerous TI-99 enthusiasts.
 
-This documentation provides a **turnkey build guide**, full feature reference, wiring diagrams, SD card prep instructions, configuration options, and troubleshooting information — designed for both builders and end-users.
-
 ---
 
-## Safety Warnings
+## Safety Warnings <a name="safety-warnings"></a>
 
 > **IMPORTANT — READ BEFORE USING OR BUILDING:**
 
@@ -62,52 +63,22 @@ This documentation provides a **turnkey build guide**, full feature reference, w
 - ⚠️ **The QI (Quality Improved) model of the TI-99/4A is not supported without hardware modifications.**  
   This is a TI motherboard limitation: QI units block GROM access on the side port, which is required for cartridge emulation.
 
----
 
-## Hardware Requirements
-
-| Component | Description | Notes |
-|-----------|-------------|-------|
-| **PPEB-cr PCB** | v3.x Board Design | Provided as KiCAD/Gerber files |
-| **Raspberry Pi Pico W** | Main processor | Must be Pico W version | SC0918 |
-| **PSRAM Module** | 8MB (2x 8MB chips needed for 8MB Sams, 2MB if you want to add rs232) | APS6404L-3SQR-SN |
-| **Reset Button** | Optional | Allows External reset |
-| **Sideport Edge Connector** | TI-99/4A sideport interface | 5530843-4 |
-| **Female USB Connector** | Single Through Hole USB 2.0 Female Connector | GSB12121031EU |
-| **MicroSD Card** | FAT32 formatted | 8GB or larger recommended |
-
-## Optional Hardware
-| Component | Description | Notes |
-|-----------|-------------|-------|
-| **USB Hub (optional)** | External powered hub | For keyboard, mouse, USB storage |
-| **RS232 Wiring (optional)** | 3.3V logic level breakout | GP8 = TX, GP9 = RX |
-| **3D Printed Case** | PPEB-cr Enclosure | STL files provided |
-
----
-
-## Special Build Notes
-
-
-- 🛠 **RS232 Support:**  
-  RS232 is provided via the Pico W's second UART at 3.3V logic levels.  
-  Not compatible with 8MB memory for Sams.
-  If you require RS232 output, connect:
-  - `GP8 → TX`
-  - `GP9 → RX`
 
 - 🛠 **Power Supply Stability:**  
   TI-99/4A power supply health is critical to PPEB-cr stability.  
   Many random lockups have been traced to marginal regulators or aged power bricks.  
   If experiencing intermittent behavior, verify or recap your TI power supply.
 
-- 🛠 **C4 Capacitor Removal:**  
-  On the first relase of the SMD based boards, **C4 must be removed** for SD card compatibility.  
-  
+
+
 ---
 
-## What This Manual Provides
 
-- ✅ Full Build Guide  
+## What This Manual Provides <a name="what-this-manual-provides"></a>
+
+- ✅ Assembly Guides
+- ✅ 3D Printable Case Files 
 - ✅ SD Card Setup  
 - ✅ Firmware Installation  
 - ✅ Configuration File Reference (`autoload.cfg`)  
@@ -115,156 +86,27 @@ This documentation provides a **turnkey build guide**, full feature reference, w
 - ✅ IDE and USB Storage Setup  
 - ✅ Advanced Feature Documentation  
 - ✅ Troubleshooting Guide  
-- ✅ STL Case Printing Instructions  
 - ✅ Appendices: Full Config Option Table & Memory Tester Usage
 
----
-
-# Assembly Instructions
-
----
-
-## 📋 Overview
-
-This section covers hardware assembly of the PPEB-cr device, including:
-
-- PCB assembly
-- Component placement
-- Special hardware notes
-- Optional features (speech output, RS232)
-- Final build checklist
 
 
+## Hardware 
 
-# This assembly process is for the PPEB3-cr SMD board version
+There are 3 main versions of the PPEB.
 
- The board will come with all the SMD components except the PSram if you order it assembled from JLCPCB.
- (Sometimes they may have the psram, but it's been out of stock)
+The original version with one PSRam Support for up to 2Mb Sams Memory  
+The updated v3 board with dual PSRam Support for up to 8Mb Sams Memory  
+The SMD version with dual PSRam support/ rear MicroSd - USB Ports.  
 
+## Assembly Guides <a name="Assembly-Guides"></a>
 
-## ⚠️ Before You Start
+Here you will find the guides for the different versions of the PPEB pcbs.
 
-- Carefully inspect all PCB files before ordering your board.
-- Verify BOM and parts list — exact part sourcing may vary depending on vendor and regional availability.
-- Work on an ESD-safe work surface.
-- If unsure about SMD soldering, seek assistance.
+[Click here for PPEB-cr SMD Version Assembly guide](/PPEBCR.md)
 
 ---
 
-## 🧰 Required Components
-
-| Quantity | Part | Notes | Part Number |
-|----------|------|-------|-------|
-| 1 | PPEB3-SMD v3.2a PCB | From provided KiCAD files |
-| 1 | Raspberry Pi Pico W | Main processor | SC0918 |
-| 2 | 8MB PSRAM  | 8MB or 16MB total (Up to 8MB usable on the TI)| APS6404L-3SQR-SN |
-| 1 | Edge Connector (TI Sideport) | 44-pin edge connector | 5530843-4 |
-| 1 | USB | Single Through Hole USB 2.0 Female Connector | GSB12121031EU |
-| 1 | Reset Button (optional) | Standard 6x6x5 tactile switch | TS02-66-50-BK-100-LCR-D |
-
-## 🧰 Optional
-| Quantity | Part | Notes |
-|----------|------|-------|
-| 1 | 3D Printed Case | STL files provided |
-
----
-
-## 🔧 Build Procedure
-
-
-### 1️⃣ **Pico W Installation**
-
-- Pico W module solders to the board using the castellated edges on the Pico.
-- Verify correct alignment:
-  - USB port facing front of board
-  - Pin 1 correctly oriented
-  - Apply soldering iron to the pcb and the edge of the pico, and apply solder.
-
----
-
-### 2️⃣ **PS Ram Installtion**
-
-- PS Ram is 8 Pin SOP , so surface mount skills are needed.
-- It requires u2 to be installed for standard operation, and that will give you 2MB Sams memory.
-- Install u7 for 8mb Sams Ram, or leave off if you are planning to as rs232.
-
-### 3️⃣ **Sideport Edge Connector**
-
-- Bend the pins on the edge connector in, using a flat surface like a table, they should look like a /\ with just enough room for the board to squeeze between the pins. (Tight is ok)
-- Slide the board into the 44-pin sideport edge connector carefully.
-- Check for bent pins, and try to align the board and edge connector in a straight line.
-- Solder the two opposite end pins on one side, then check to make sure the connector is straight with the board, then solder the other side. Then solder all the other connections on the connector.
-
----
-
-### 4️⃣ **Reset Button (Optional)**
-
-- Mount reset button on the PCB header.
-- Cut the 2 pins close to the edge of the board flush before soldering.
-- Solder the connectors.
-
----
-
-### 5️⃣ **Rear USB Port (Optional)**
-
-- Install USB Connector
-  - Solder the 4 usb pins and the 2 support pins.
-  - Solder points tp2 and tp3 from the underside of the board to the underside of the pi pico. (This makes the actual USB connection to the rear)
-
---- 
-
-### 6️⃣ **Remove C4**
-
-- If you have the original issue of the cr board, remove c4 (It's located near u7)
-
----
-### 7️⃣ **Program the PICO**
-
-- Before installing into the case, be sure to program the Pi Pico W. (See firmware instructions below)
-
----
-
-### 8️⃣ **RS232 Breakout (Optional)**
-
-- If RS232 functionality is desired:
-  - Wire `GP8 → TX` and `GP9 → RX` to external header along with Gnd. Gnd is available on several pins of the pico.
-  - Voltage is 3.3V logic-level — external level shifter required if interfacing to legacy DB9 serial hardware.
-
----
-
-### 9️⃣ **Case Assembly**
-
-- Print STL files:
-  - `PPEBcr-CaseBottom.stl`
-  - This is used for either top.
-  - `PPEBcr-Button.stl`
-  - This is a very small print.. On a fast printer, either print a bunch, or find the slicer setting to set a minimum time per layer for good results.
-  
-  - Case Tops
-  
-  - `PPEBcr-CaseTop-M3-Nuts.stl`
-  - This uses m3 nuts forced into the print. Can work, but be careful when you tighten your screws as they will remove the nuts.
-  - `PPEBcr-CaseTop-HeatSetInserts.stl`
-  - This uses m3 inserts.
-  
-- Use M3x8 or M3x10 screws to secure PCB inside case for the insert case, for the M3 Nut version, it depends on how far down you put yours nuts.
-- Place the PCB into the lower case. There is a U shaped cutout in the board to help align.
-- Place the button in the hole, and then place to two case halves together and secure with the screws.
-
----
-
-# **Final Inspection**
-
-- Verify:
-  - All solder joints are clean.
-  - No solder bridges between pins.
-  - SD card socket functional.
-  - Case fits without stress on PCB.
-- DO NOT power device until all checks complete.
-
----
-
-# Firmware Installation
+# Firmware Installation <a name="firmware-installation"></a>
 
 ---
 
@@ -313,6 +155,7 @@ From the `PPEB2.zip` package with the UF2 firmware file you received, you should
 
 ### 2️⃣ Flash UF2 Firmware
 
+- Pick the Correct Firmware for your device - If you have 1 PSRam, then select the 2mb version, 2 PSRams, select the 8mb version.
 - Copy the file `PPEB.uf2` directly onto the Pico’s USB drive.  These files are only [located on AtariAge](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111).
 - After the file copies, the Pico will automatically reboot into PPEB-cr mode.
 - It should blink 3 times when powered with no microsd inserted.
@@ -341,7 +184,7 @@ From the `PPEB2.zip` package with the UF2 firmware file you received, you should
 > ✅ Firmware installed. Proceed to [SD Card Preparation →](#sd-card-preparation)
 
 ---
-# SD Card Preparation
+# SD Card Preparation <a name="sd-card-preparation"></a>
 
 ---
 
@@ -445,7 +288,7 @@ The P-Code specific files are here:
 
 ---
 
-## 📂 Sample `autoload.cfg`
+## 📂 Sample `autoload.cfg` 
 
 A basic starting configuration file may look like this:
 
@@ -483,7 +326,7 @@ Before first use:
 
 ---
 
-# Configuration File Reference (`autoload.cfg`)
+# Configuration File Reference (`autoload.cfg`) <a name="configuration-file-reference-autoloadcfg"></a>
 
 ---
 
@@ -623,7 +466,7 @@ SNTP=pool.ntp.org
 
 ---
 
-# TI BASIC Commands Reference
+# TI BASIC Commands Reference <a name="ti-basic-commands-reference"></a>
 
 ---
 
@@ -730,7 +573,7 @@ This section documents all supported `CALL` commands.
 
 ---
 
-# IDE and USB Storage Setup
+# IDE and USB Storage Setup <a name="ide-and-usb-storage-setup"></a>
 
 ---
 
@@ -817,13 +660,13 @@ HARDDISK2=harddisk2.dat
 
 ---
 
-# Advanced Features
+# Advanced Features <a name="advanced-features"></a>
 
 ---
 
 ## 📋 Overview
 
-The PPEB-cr replicates — and in many cases expands — multiple classic TI expansion subsystems inside one sideport device.
+The PPEB replicates — and in many cases expands — multiple classic TI expansion subsystems inside one sideport device.
 
 This section summarizes each advanced subsystem available once fully configured.
 
@@ -1033,7 +876,7 @@ BTJ1=01:23:45:67:89:AB
 
 ---
 
-# Troubleshooting Guide
+# Troubleshooting Guide <a name="troubleshooting-guide"></a>
 
 ---
 
@@ -1120,7 +963,7 @@ This section summarizes common problems, their likely causes, and solutions base
 
 ---
 
-# Case Printing Instructions
+# Case Printing Instructions <a name="case-printing-instructions"></a>
 
 ---
 
@@ -1140,16 +983,10 @@ The case design protects the PCB, provides proper mounting holes, and exposes:
 
 ## 🧰 Provided STL Files
 
-| File | Description |
-|------|-------------|
-| `PPEB3-Simple Case-top-flat.stl` | Top shell |
-| `PPEB3-Simple Case-bottom-flat.stl` | Bottom shell |
-| `PPEB3-Simple Case-top-flat-MODIFIED.stl` | (Alternate variant) |
-| `PPEB3-Simple Case-bottom-flat-MODIFIED.stl` | (Alternate variant) |
+PPEB-cr Surface Mount Version (If not using inserts I recommend PPZ-00's Case)
 
-Both the standard and modified versions are compatible.  
-The "MODIFIED" versions include slight clearance tweaks for newer board revisions.
-
+[Click here for PPZ-00's Case Files](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/30/#findComment-5653770)  
+[Click Here for dabone's PPEB-cr Case Files](https://github.com/dabonetn/ppeb-cr/tree/main/STLs)
 ---
 
 ## 🖨 Recommended Print Settings
@@ -1162,20 +999,22 @@ The "MODIFIED" versions include slight clearance tweaks for newer board revision
 | Material | PLA, PETG, or ASA |
 | Print Orientation | Flat on bed, face-down recommended |
 | Wall Count | 3+ walls for durability |
+| Supports | Not Needed for most printers |
 
-> PETG or ASA recommended for stronger sideport grip if printed often.
+
 
 ---
 
 ## 🔩 Assembly Hardware
 
-| Part | Quantity |
-|------|----------|
-| M3x10mm Screws | 4 (for securing PCB to case posts) |
-| Optional rubber feet | 4 |
+|Version| Part | Quantity | |
+|------|----------|-----|----|
+| dabonetn | M3x8 or M3x10 | 3 |
+| dabonetn | M3 Nuts (or inserts)| 3 | 
+| dabonetn | M3 Insert (or nuts) | 3 |
+| PPZ-00 | M3x10mm Screws | 4 (for securing PCB to case posts) | Self-tapping M3 screws will thread directly into printed holes. Use moderate torque to avoid splitting posts.|
+| PPZ-00 | Optional rubber feet | 4 |
 
-- Self-tapping M3 screws will thread directly into printed holes.
-- Use moderate torque to avoid splitting posts.
 
 ---
 
@@ -1183,12 +1022,8 @@ The "MODIFIED" versions include slight clearance tweaks for newer board revision
 
 1. Verify PCB fully assembled and tested.
 2. Insert PCB into bottom case half.
-3. Insert sideport edge connector through slot.
-4. Align MicroSD, USB, and optional audio jack with cutouts.
-5. Install M3 screws into mounting posts.
-6. Snap-fit or gently press-fit top case half into position.
-7. Verify full enclosure fitment — no strain on PCB.
-
+3. Place button in hole on top case
+4. Place halves together and screw together.
 ---
 
 ## ⚠ Known Fitment Notes
@@ -1200,7 +1035,7 @@ The "MODIFIED" versions include slight clearance tweaks for newer board revision
 
 ---
 
-# Appendix A — Full Config Parameter Table
+# Appendix A — Full Config Parameter Table <a name="appendix-a--full-config-parameter-table"></a>
 
 ---
 
@@ -1256,7 +1091,7 @@ The "MODIFIED" versions include slight clearance tweaks for newer board revision
 
 ---
 
-# Appendix B — Memory Tester Usage
+# Appendix B — Memory Tester Usage <a name="appendix-b--memory-tester-usage"></a>
 
 ---
 
@@ -1328,7 +1163,7 @@ NOPSW=5
 
 ---
 
-# Credits and Contributors
+# Credits and Contributors <a name="credits-and-contributors"></a>
 
 ---
 
