@@ -102,6 +102,8 @@ The SMD version with dual PSRam (8mb Sams), reset button, and rear mounted Micro
 
 Here you will find the guides for the different versions of the PPEB pcbs.
 
+[Click here for PPEB Version 2 & 3 Assembly guide](/PPEB-v2-V3.md)
+<br>
 [Click here for PPEB-cr SMD Version Assembly guide](/PPEBCR.md)
 
 ---
