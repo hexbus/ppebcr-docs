@@ -639,6 +639,8 @@ HARDDISK2=harddisk2.dat
 
 - It is strongly recommended to build IDE images on emulator or PC before transferring to USB.
 
+- [Link to Hexbus's IDE Guide](https://hexbus.com/ti99geek/Projects/idedsr/idedsr.html#idedsr)
+
 ---
 
 ## ⚠ Common Issues
