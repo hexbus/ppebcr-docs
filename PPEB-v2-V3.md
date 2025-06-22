@@ -3,6 +3,9 @@
 
 ---
 
+![V3 Board](/images/PPEB-V3.jpg)
+
+--- 
 ## BOM
 | Location | Value | Notes |
 |----------|------|-------|

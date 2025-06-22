@@ -4,6 +4,13 @@
 
 <br>
 
+
+![PPEBcr Board Top Assembled](/images/PPEB-cr-Front.jpg)
+
+
+<br>
+<br>
+
 # This assembly process is for the PPEB-cr (SMD preassembled) version
 
  The board should come with all the SMD components except the PSram if you order it assembled from JLCPCB.
@@ -99,6 +106,12 @@
 - Install USB Connector
   - Solder the 4 usb pins and the 2 support pins.
   - Solder points tp2 and tp3 from the underside of the board to the underside of the pi pico. (This makes the actual USB connection to the rear)
+  - Here's how it should look after install.
+  
+![PPEBcr Board Bottom Assembled](/images/PPEB-cr-Rear.jpg)  
+
+
+
 
 --- 
 
