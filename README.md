@@ -9,7 +9,7 @@
 - [Project Overview](#project-overview)  
 - [Safety Warnings](#safety-warnings)
 - [What This Manual Provides](#what-this-manual-provides)
-- [Assembly Guides](#Assembly-Guides)
+- [Assembly Guides](#AssemblyGuides)
 - [Firmware Installation](#firmware-installation)
 - [SD Card Preparation](#sd-card-preparation)
 - [Configuration File Reference (`autoload.cfg`)](#configuration-file-reference-autoloadcfg)
@@ -98,7 +98,7 @@ The original version with one PSRam (2Mb Sams)
 The updated v3 board with dual PSRam (8Mb Sams)
 The SMD version with dual PSRam (8mb Sams), reset button, and rear mounted MicroSd and USB Ports.  
 
-## Assembly Guides <a name="Assembly-Guides"></a>
+## Assembly Guides <a name="AssemblyGuides"></a>
 
 Here you will find the guides for the different versions of the PPEB pcbs.
 
