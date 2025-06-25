@@ -348,7 +348,7 @@ If you want your Pi Pico PEB to boot with a menu, be sure to get the PICOPEBG.ZI
 ```ini
 CART=/PICOPEB
 ```
-If you have the reset button installed or a PPEB-cr version, then also add reset=1 to allow returning to the PPEB menu with the reset button.
+If you have the reset button installed or a PPEB-cr version, then also add RESET=1 to allow returning to the PPEB menu with the reset button.
 (I think this is incompatible with a rs232 adapter installed,
 <br> I've not tested the rs232 function)
 
