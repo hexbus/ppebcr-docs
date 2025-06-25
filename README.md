@@ -338,10 +338,26 @@ The `autoload.cfg` file controls nearly all PPEB operating parameters.
 It is read at startup from the **root directory** of the SD card.
 
 This section documents **all supported configuration fields**, derived directly from the firmware source (`PPEB2.ino`) and AtariAge thread discussions.
+___
+ 
+**Automatic Loading of PPEB Menu from the TI Boot Screen**
+
+If you want your Pi Pico PEB to boot with a menu, be sure to get the PICOPEBG.ZIP from here [Link](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/27/#findComment-5609340), 
+<br>Unzip it and put it on your sd Card. And place the following in your autoload.cfg
+
+```ini
+CART=/PICOPEB
+```
+If you have the reset button installed or a PPEB-cr version, then also add reset=1 to allow returning to the PPEB menu with the reset button.
+(I think this is incompatible with a rs232 adapter installed,
+<br> I've not tested the rs232 function)
+
+
+
 
 ---
 
-## 📂 File Format
+### 📂 File Format
 
 - File name: `autoload.cfg`
 - Format: Plain text (ASCII)
@@ -987,11 +1003,25 @@ The case design protects the PCB, provides proper mounting holes, and exposes:
 
 ## 🧰 Provided STL Files
 
-PPEB-cr Surface Mount Version
+## V2/V3 Version By JasonACT
 
-[Click here for PPZ-00's Case Files](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/30/#findComment-5653770)  
-[Click Here for dabone's PPEB-cr Case Files](https://github.com/dabonetn/ppeb-cr/tree/main/STLs)
----
+[Click Here](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/35/#findComment-5680281)
+
+
+### PPEBcr (SMD Version)
+
+**dabone (Mark Ormond / dabonetn)**  
+<br>
+ Github Link 
+<br>
+[Click Here](https://github.com/dabonetn/ppeb-cr/tree/main/STLs)
+<br>
+
+**PPZ-00**
+
+STL file design for printable enclosures  
+[Atariage Link](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/30/#findComment-5653770)
+  
 
 ## 🖨 Recommended Print Settings
 
@@ -1083,7 +1113,7 @@ PPEB-cr Surface Mount Version
 | `PI.CLOCK` | 0 or 1 | Enable SNTP clock sync | 1 |
 | `PI.TCP` | String | Client socket address | *(reserved)* |
 | `SOCI` | 0 or 1 | Socket-keyboard input routing | *(reserved)* |
-
+| `RESET` | 0 or 1 | Enable Reset Pin on GPIO8 | *0* |
 ---
 
 ## 📝 Notes:
@@ -1171,9 +1201,9 @@ NOPSW=5
 
 ---
 
-The PPEB project exists thanks to the combined efforts of multiple builders, developers, testers, and community members who contributed code, hardware, documentation, and real-world feedback.
+The PPEB project is from JasonACT, who developed the orignal hardware and software.
 
-This documentation consolidates knowledge drawn directly from the original AtariAge thread, firmware releases, hardware designs, and builder discussions.
+This documentation started with a AI scrape from the original AtariAge thread, firmware releases, hardware designs, and builder discussions.
 
 ---
 
@@ -1188,34 +1218,31 @@ This documentation consolidates knowledge drawn directly from the original Atari
 ## 🧑‍💻 Core Firmware Development
 
 - **JasonACT (AtariAge)**  
-  - Author of the original Pi Pico W PEB firmware.  
-  - Creator of the software build that derived from the TIPI project.  
+  - Author and Creator of the original Pi Pico W PEB firmware.  
   - Maintainer of ongoing firmware updates and feature expansions (only software, not hardware)
-  - October 2024 Source code release: [https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#comment-5549700](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#comment-5549700)
+  - [October 2024 Source code and V2.1 Gerber, V3 Gerber, Dip Trace Files Click Here](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#findComment-5549700)
+
+  - MAME "Speech Synthesizer" stuff... (see GitHub: rgrosset's pico-pwm-audio)
+
     
 - **Latest Firmware Build (Page 28 Post #5639111):**  
-  - [https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#comment-5639111](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111)
-  - Other important dates for files in the thread by Jason:
-    - PPEB2NW.ino.zip = April 4  (New Console Tester)
-    - PPEB2.zip       = March 23 (SPEECH & ALPHON)
-    - PPEB2.zip       = Feb 2  (dabone reset)
-    - PPEB2.zip       = Jan 26 (dabone suggestions)
-    - PICOPEBG.zip    = Jan 21 (Basic program with menu)
-
-- **JediMatt (GitHub)**
-  - Original TIPI author
-  - Github repo: [TIPI](https://github.com/jedimatt42/tipi)
-    
+  - [Click Here](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111)
+   
 ---
 
 ## 🛠 Hardware Design & Board Work
+- **JasonACT**  
+  - Original Idea for the project
+  - Original Board and schematics
+  - Untold Hours of Development
+  - V2, and V3 boards.
+  - [V2.1 Gerber, V3 Gerber, Dip Trace Files, and October 2024 Source code Click Here](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#findComment-5549700)
+
 
 - **dabone (Mark Ormond / dabonetn)**  
   - Surface-mount PPEB-cr redesign (PPEB3-SMD v3.2a)  
   - KiCAD PCB layouts & production Gerbers  
   - Hardware builder support only, but knows some of the software.
-
-- **Gerber Files & Board Release:**  
   - Github repo: [ppeb-cr](https://github.com/dabonetn/ppeb-cr)
     
 - **RickyDean, Shift838, dhe, visrealm**  
@@ -1225,11 +1252,20 @@ This documentation consolidates knowledge drawn directly from the original Atari
 
 ## 🖨 3D Printable Case Contributors
 
-- **PPZ-00 & dabone (AtariAge)**  
+### V2/V3 Version By JasonACT
+
+[Click Here](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/35/#findComment-5680281)
+
+### PPEBcr (SMD Version)
+
+- **dabone (Mark Ormond / dabonetn)**  
+
+ - Github Link [Click Here](https://github.com/dabonetn/ppeb-cr/tree/main/STLs)
+
+ - **PPZ-00**
   - STL file design for printable enclosures  
-  - Iterative community case design adjustments
   - https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/30/#findComment-5653770
-  - https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/27/#findComment-5610718
+  
 
 ---
 
