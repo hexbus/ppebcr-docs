@@ -1,7 +1,7 @@
 # PPEB (formal name: Pi Pico W Peripheral Expansion Box Side Port Device)  
 *Complete Build & User Manual — TI-99/4A Sideport Expansion*
 
-## *THIS IS DRAFT and I accept merge requests with corrections to fix mistakes.*
+## *THIS IS DRAFT and I accept pull/merge requests with corrections to fix mistakes.*
 
 > *(Click any section below to jump directly to that part of the manual.)*
 # 📑 Table of Contents
@@ -46,7 +46,7 @@ Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and 
   
 <br>
 
-The PPEB project is built on the firmware by **JasonACT** with hardware modifications by **dabone**, community contributions via AtariAge, and extensive testing by numerous TI-99 enthusiasts.
+The PPEB project is built on the firmware by **JasonACT** with hardware modifications by **dabone**, documentation by **hexbus**, community contributions via AtariAge, and extensive testing by numerous TI-99 enthusiasts.
 
 ---
 
