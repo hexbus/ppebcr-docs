@@ -137,9 +137,9 @@ and wait until the cursor returns.
 
 You can then power cycle you unit.
 
-## Removing IDESDR
+## Removing IDEDSR
 
-To remove IDE dsr from your PPEB, move or delete the IDESRAM.RAM from the root of the microsd card.  
+To remove IDE DSR from your PPEB, move or delete the IDESRAM.RAM from the root of the microsd card.  
 Also remember to comment out your IDE and HARDDISK lines from your autoload.cfg
 
 
