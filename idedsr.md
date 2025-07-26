@@ -2,7 +2,7 @@
 
 This sets up the PPEB to access a IDE drive image that defaults to DSK1 emulation.<br>
 This guide DOES NOT tell you how to actual use it.<br>
-That can be found  [Here](hexbus.com/ti99geek/Projects/idedsr/idedsr.html#operation)  from the creator of the IDEDSR.
+That can be found  [Here](https://hexbus.com/ti99geek/Projects/idedsr/idedsr.html)  from the creator of the IDEDSR.
 
 
 
@@ -18,7 +18,7 @@ This is a very important step, as the firmware and roms work together as a singl
 
 Next off you need the IDEDSR (Current version as of writing is 1.7)
 
-This is available from Hexbus's IDE Guide [Located Here](https://hexbus.com/ti99geek/Projects/idedsr/idedsr.html#operation)  
+This is available from Hexbus's IDE Guide [Located Here](https://hexbus.com/ti99geek/Projects/idedsr/idedsr.html)  
 
 [Direct link to the DSR1.7 File](https://hexbus.com/ti99geek/Projects/idedsr/Files/idedsr_v17.zip)
 
@@ -61,16 +61,17 @@ If you have a drive that keeps giving you problems, you can also try removing th
 
 Next you need a hard drive image.
 
-Here are 2 example ones.
+There are 2 example ones available in the files directory named ExampleIDEImages.zip
 
-[Harddrive images](files/ExampleIDEImages.zip)
+[Harddrive images](files/)
+
 
 | Name | Description |
 |----------|------|
 IMAGE1.dat| Contains some files, originaly posted by Rickydean. 
 test.cf7|A Blank image with 8 partitions. Maximum size for a IDE image. Posted by JasonACT  
 
-Copy one or both to your USB storage, not the MicroSD Card.
+Unzip the ExampleIDEImages.zip file and copy one or both of the files to your USB storage, not the MicroSD Card.
 
  ### Adding the IDE Option to autoload.cfg
 
@@ -136,7 +137,9 @@ and wait until the cursor returns.
 
 You can then power cycle you unit.
 
-To remove IDE dsr from your PPEB, move or delete the IDESRAM.RAM from the root of the microsd card.
+## Removing IDESDR
+
+To remove IDE dsr from your PPEB, move or delete the IDESRAM.RAM from the root of the microsd card.  
 Also remember to comment out your IDE and HARDDISK lines from your autoload.cfg
 
 
