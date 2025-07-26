@@ -17,7 +17,7 @@ This is a very important step, as the firmware and roms work together as a singl
 
 Next off you need the IDEDSR (Current version as of writing is 1.7)
 
-This is available from Hexbus's IDE Guide [Located Here](hexbus.com/ti99geek/Projects/idedsr/idedsr.html#operation)  
+This is available from Hexbus's IDE Guide [Located Here](https://hexbus.com/ti99geek/Projects/idedsr/idedsr.html#operation)  
 
 [Direct link to the DSR1.7 File](https://hexbus.com/ti99geek/Projects/idedsr/Files/idedsr_v17.zip)
 
