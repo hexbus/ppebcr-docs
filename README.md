@@ -607,6 +607,9 @@ Unlike floppy disk image support (which uses the MicroSD), IDE emulation works *
 
 The IDE emulation replicates Myarc-style hard disk functionality for compatible TI disk managers and OS environments.
 
+
+  ## [Click Here For How to Install the IDEDSR to the PPEB](/idedsr.md)
+  
 ---
 
 ## 🖧 Hardware Notes
@@ -619,7 +622,7 @@ The IDE emulation replicates Myarc-style hard disk functionality for compatible 
 
 ## 📂 File Structure on USB
 
-The USB stick root directory should contain:
+The USB stick must be formatted exFAT, and root directory should contain:
 
 ```bash
 /
@@ -627,6 +630,7 @@ The USB stick root directory should contain:
 ├── harddisk2.dat      <-- IDE drive 2 image (optional)
 ```
 
+- Subdirectories are not recommend
 - Image files are raw sector dumps, not filesystem dumps.
 - File sizes up to ~2GB per image supported.
 - Images may contain multiple partitions, formatted using Myarc HD utilities.
@@ -668,6 +672,7 @@ HARDDISK2=harddisk2.dat
 
 | Symptom | Cause | Solution |
 |---------|-------|----------|
+| TI99 Hanging on Boot|USB Formatted as FAT32|Format USB as exFAT
 | IDE not detected | USB drive not seen | Try different hub port |
 | Hard disk not formatted | Blank image used | Use Myarc utilities to initialize |
 | Image too large | Unsupported file size | Keep images ≤ 2GB |
