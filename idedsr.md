@@ -1,7 +1,8 @@
 # Guide for IDE setup on the PPEB
 
-This sets up the PPEB to access a IDE drive image that defaults to DSK1 emulation.  
-This guide DOES NOT tell you how to actual use it.  That can be found  [Here](hexbus.com/ti99geek/Projects/idedsr/idedsr.html#operation)  from the creator of the IDEDSR.
+This sets up the PPEB to access a IDE drive image that defaults to DSK1 emulation.<br>
+This guide DOES NOT tell you how to actual use it.<br>
+That can be found  [Here](hexbus.com/ti99geek/Projects/idedsr/idedsr.html#operation)  from the creator of the IDEDSR.
 
 
 
