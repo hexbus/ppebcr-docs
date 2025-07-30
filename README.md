@@ -149,6 +149,7 @@ Download the `PPEB2.zip` unzip it, and you should have:
 ### 1️⃣ Connect Pico W
 
 - Do not have a Microsd card inserted.
+- Do not have anything plugged into the rear USB port.
 - Hold down the **BOOTSEL** button on your Pico W.
 - While holding the button, connect the Pico to your PC using a microUSB cable.
 - The Pico should appear as a USB mass storage device named **RPI-RP2**.
