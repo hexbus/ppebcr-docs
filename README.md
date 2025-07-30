@@ -37,7 +37,7 @@ Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and 
 - Cartridge GROM/GRAM loader
 - Disk Controller with .DSK sector image support
 - IDE Hard Disk Emulation via USB stick
-- RS232 Serial Support (3.3V or TCP/IP socket)
+- RS232 Serial Support (3.3V or TCP/IP socket - physical is not supported on 8MB boards)
 - TIPI Extensions Compatibility
 - USB Keyboard, Mouse, Joystick, Bluetooth HID support
 - Math Co-Processor for accelerated floating-point math
@@ -794,7 +794,7 @@ CALL PCODEOF
 
 ## 🔧 RS232 Serial Interfaces
 
-### Option 1 — Physical RS232 (3.3V)
+### Option 1 — Physical RS232 (3.3V - not on 8MB boards)
 
 - Available via Pico's UART2 interface:
   - `GP8 → TX`
