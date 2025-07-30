@@ -101,7 +101,7 @@
 
 ---
 
-### 5️⃣ **Rear USB Port (Optional)**
+### 5️⃣ **Rear USB Port (REQUIRED FOR REAR USB TO WORK!!!)**
 
 - Install USB Connector
   - Solder the 4 usb pins and the 2 support pins.

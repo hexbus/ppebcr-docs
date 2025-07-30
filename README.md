@@ -46,7 +46,7 @@ Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and 
   
 <br>
 
-The PPEB project is built on the firmware by **JasonACT** with hardware modifications by **dabone**, documentation by **hexbus**, community contributions via AtariAge, and extensive testing by numerous TI-99 enthusiasts.
+The PPEB project is built on the firmware and original hardware by **JasonACT** with hardware modifications by **dabone**, documentation by **hexbus**, community contributions via AtariAge, and extensive testing by numerous TI-99 enthusiasts.
 
 ---
 
@@ -130,17 +130,15 @@ Future updates may simply involve replacing files on the MicroSD card.
 
 ## 🗃 Firmware Package Contents
 
-From the `PPEB2.zip` package with the UF2 firmware file you received, you should have:
+[Latest beta firmware download here.](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/35/#findComment-5680418)
+
+Download the `PPEB2.zip` unzip it, and you should have:
 
 | File / Folder | Purpose |
 |----------------|---------|
-| `PPEB.uf2` | Main firmware binary (can be named something else, but will have .uf2 at the end |
-| `/CART/` | Cartridge ROM files |
-| `/DSK/` | Disk image examples |
-| `PCode.ROM` / `PCode.GRM` | PCode card support |
-| `autoload.cfg` | Sample configuration file |
-| `BLNK.DSK` | Blank RAM disk image |
-| `README.txt` | Original developer notes |
+| `PPEB2_2M.ino.uf2` | Main firmware binary for 2MB Version (Single PSRam Chip) |
+| `PPEB2_8M.ino.uf2` | Main firmware binary for 8MB Version (Dual PSRam Chip) |
+| `/ROMS/` | ROM, Bins, and Blank disk files |
 
 ---
 
@@ -151,6 +149,7 @@ From the `PPEB2.zip` package with the UF2 firmware file you received, you should
 ### 1️⃣ Connect Pico W
 
 - Do not have a Microsd card inserted.
+- Do not have anything plugged into the rear USB port.
 - Hold down the **BOOTSEL** button on your Pico W.
 - While holding the button, connect the Pico to your PC using a microUSB cable.
 - The Pico should appear as a USB mass storage device named **RPI-RP2**.
@@ -248,45 +247,52 @@ This section provides a complete guide to:
 
 ## 📂 SD Card File Structure
 
-Your SD card root should contain the following folders and files.  They can be obtained from the AtariAge comment that is [current as of the writing of this document](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111).
+Be sure to get the matching DSR.ROM that matches your firmware. Or just download the latest and reflash your PPEB.
+
+[Latest beta firmware download here.](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/35/#findComment-5680418)
+
+
+Your SD card root should contain the at least the following folders and files.  
+These files are in the firmware package in the roms directory.  
+(You will have to create your own autoload.cfg of download the sample card image below that has a barebones file in it)
+
+The easiest way to do this is just copy the content of the roms directory to the root of your sd card.
 
 ```
 /
 ├── autoload.cfg           <-- Main configuration file
-├── PCode.ROM              <-- PCode support ROM (12KB)
-├── PCode.GRM              <-- PCode GROM (62KB or 64KB)
-├── BLNK.DSK               <-- Blank RAM disk image (optional)
-├── spool.txt              <-- PIO logging file (optional)
-├── /CART/                 <-- Cartridge ROMs folder
-├── /DSK1/ (optional)      <-- Disk image folders
-├── /DSK2/ ... /DSK9/      <-- Additional disk image folders
-├── /CS1/ (optional)       <-- Cassette file mapping
-└── (Other .DSK files)     <-- Direct .DSK sector image files
+├── DSR.ROM                <-- MAIN DSR.ROM (REQUIRED!!!)
+├── DISK.ROM               <-- Needed for Disk Emulation. 
+├── PICOPEBG.BIN           <-- This the PPEBMenu that can be autostarted with the cart option in autoload.cfg
+
+Optional
+
+├── PCode.GRM              <-- Needed for PCODE Card Emulation
+├── PCode.ROM              <-- Needed for PCODE Card Emulation
+├── BLNK.DSK               <-- Blank Disk Image
+
 ```
 
----
-
-## 📂 Folder Descriptions
-
-| Folder | Description |
-|--------|-------------|
-| `/CART/` | Holds GROM/GRAM cartridge images (MAME `.zip` or `.rpk` supported) |
-| `/DSK1/` - `/DSK9/` | Holds disk image files or directories mapped to disk drives |
-| `/CS1/` | Cassette support files (optional, if using `MAPCS1` commands) |
-| `spool.txt` | PIO output log (optional for serial output or debug) |
-
----
-
-## 📂 Required ROM Files
-
-All the required files are from the firmware package (`PPEB2.zip`) on [AtariAge](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5616188)
-
-The P-Code specific files are here:
-
-- `PCode.ROM` — 12KB UCSD PCode ROM image
-- `PCode.GRM` — 62KB or 64KB PCode GROM image
-
 > NOTE THAT P-CODE files must reside in the **root** of the SD card if you wish to use PCode mode.
+
+
+ A sample card image can be found here. [Download Sample Card Image](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5616188).
+
+Just unzip it to the root of your sdcard. If you have done this correctly you will have the following also appear in the root of the sdcard.
+
+
+
+```
+/
+├── autoload.cfg           <-- Main configuration file
+├── BLNK.DSK               <-- Blank RAM disk image (optional)
+├── Development            <-- Programming Tools ROMs folder
+├── Educational            <-- Educational Programs and Games folder
+├── Games                  <-- Games folder
+├── Homebrew               <-- Homebrew Games
+└── Tools                  <-- TI Tools (Disk Manager, etc) folder
+```
+
 
 ---
 
@@ -294,23 +300,18 @@ The P-Code specific files are here:
 
 A basic starting configuration file may look like this:
 
-```ini
+```
 CRU=1
+PCODE=0
 BAUD=9600
 WIFI=YourSSID
 PASS=YourWiFiPassword
 SNTP=pool.ntp.org
 TZHR=-5
 TZMN=0
-DSK1=/DSK1/
-CART=mycartridge
-MMEM=1
-MYARC=1
-PCODE=1
-PSNDO=1
-IDE=1
-HARDDISK1=harddisk1.dat
-HARDDISK2=harddisk2.dat
+D1MAP=/DSK1/BLNK.DSK
+CART=/PICOPEB
+RESET=1
 ```
 
 > A full list of all supported configuration fields will be documented in the [Configuration Reference](#configuration-reference).
@@ -342,7 +343,7 @@ ___
  
 **Automatic Loading of PPEB Menu from the TI Boot Screen**
 
-If you want your Pi Pico PEB to boot with a menu, be sure to get the PICOPEBG.ZIP from here [Link](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/27/#findComment-5609340), 
+If you want your Pi Pico PEB to boot with a menu, be sure to get the PICOPEBG.BIN from the firmware pack in the ROMS directory
 <br>Unzip it and put it on your sd Card. And place the following in your autoload.cfg
 
 ```ini
@@ -395,8 +396,8 @@ SNTP=pool.ntp.org
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| `DSK1` → `DSK9` | Map DSK folders or images | `DSK1=/DSK1/` |
-| `MAP1` → `MAP9` | (Alternative mapping commands) | Same as above |
+| `D1MAP` → `D9MAP` | Map DSK folders or images | `D1MAP=/DSK1/DISKNAME.DSK` |
+| `MAP1` → `MAP9` | (Alternative mapping commands) | Need to verify |
 | `C1MAP` | Map CS1 file | `C1MAP=/CS1/file` |
 | `C2MAP` | Map CS2 file | `C2MAP=/CS2/file` |
 | `CART` | Cartridge image to autoload | `CART=MyCart` |
@@ -435,7 +436,12 @@ SNTP=pool.ntp.org
 | Parameter | Description | Example |
 |-----------|-------------|---------|
 | `PSNDO` | Enable Digi-Port 8-bit audio | `PSNDO=1` |
-| `FORTI` | ForTI sound card emulation (`0`=off, `1-3` modes) | `FORTI=1` |
+| `FORTI` | ForTI sound card emulation (`0`=off, `1-3` modes) | `FORTI=1` | 
+| `FORTI=1` | one chip emulated    - plays left & right channel in mono the same as the TI | `FORTI=1` | 
+| `FORTI=2` | 4 chips emulated - plays in stereo, | `FORTI=2` | 
+| `FORTI=3` | 4 chips emulated - plays in mono | `FORTI=3` | 
+
+Forti Sound is ONLY availble using a Bluetooth Speaker, it is not mixed into the onboard sound of the TI.
 
 ---
 
@@ -602,6 +608,9 @@ Unlike floppy disk image support (which uses the MicroSD), IDE emulation works *
 
 The IDE emulation replicates Myarc-style hard disk functionality for compatible TI disk managers and OS environments.
 
+
+  ## [Click Here For How to Install the IDEDSR to the PPEB](/idedsr.md)
+  
 ---
 
 ## 🖧 Hardware Notes
@@ -614,7 +623,7 @@ The IDE emulation replicates Myarc-style hard disk functionality for compatible 
 
 ## 📂 File Structure on USB
 
-The USB stick root directory should contain:
+The USB stick must be formatted exFAT, and root directory should contain:
 
 ```bash
 /
@@ -622,6 +631,7 @@ The USB stick root directory should contain:
 ├── harddisk2.dat      <-- IDE drive 2 image (optional)
 ```
 
+- Subdirectories are not recommend
 - Image files are raw sector dumps, not filesystem dumps.
 - File sizes up to ~2GB per image supported.
 - Images may contain multiple partitions, formatted using Myarc HD utilities.
@@ -663,6 +673,7 @@ HARDDISK2=harddisk2.dat
 
 | Symptom | Cause | Solution |
 |---------|-------|----------|
+| TI99 Hanging on Boot|USB Formatted as FAT32|Format USB as exFAT
 | IDE not detected | USB drive not seen | Try different hub port |
 | Hard disk not formatted | Blank image used | Use Myarc utilities to initialize |
 | Image too large | Unsupported file size | Keep images ≤ 2GB |
