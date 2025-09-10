@@ -1191,17 +1191,19 @@ NOPSW=5
 - `NOPS` and `NOPSW` introduce deliberate read/write delays.
 - Use the memory test tool after adjustments to confirm stability before flashing final PPEB firmware.
 
-### Return the unit back to regular firmware when done
-
-- Ensure you flash the regular PPEB firmware back to the unit after completing the memory test.
-
 ---
 
-## 📝 Test Recommendations
+### 📝 Test Recommendations
 
 - Run for several minutes to verify no errors under thermal load.
 - Perform test after full PCB assembly to account for solder joint quality.
 - Use known-good name-brand PSRAM chips whenever possible.
+
+---
+
+### Return the unit back to regular firmware when done
+
+- Ensure you flash the regular PPEB firmware back to the unit after completing the memory test.
 
 ---
 
