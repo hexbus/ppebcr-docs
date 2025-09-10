@@ -841,18 +841,10 @@ CALL MATHOFF
 
 - Audio output routing:
 
-  1. Pico PWM → RC Filter (2.2kΩ + 0.1µF)
-  2. Filter → Audio Jack output.
-
-- Matches TI Speech DSR functionality for software compatibility.
-
-- PWM signal quality depends on:
-
-  - Pico system load.
-  - Filtering circuit stability.
-
-> ⚠ Omitting audio jack has no impact on firmware functionality if speech output not desired.
-
+ - Matches TI Speech DSR functionality for software compatibility.
+ 
+ - Outputs through console main channel output
+   
 ---
 
 ## 🔧 Digi-Port 8-bit Audio
@@ -872,6 +864,8 @@ PSNDO=1
 ## 🔧 ForTI Sound Card Emulation
 
 - Emulates multi-chip TI ForTI sound expansion:
+
+- Needs Blueooth connected for you to be able to use, and you might hear a slight delay
 
 ```ini
 FORTI=1  (or 2 or 3)
