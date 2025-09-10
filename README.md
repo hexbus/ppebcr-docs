@@ -130,15 +130,19 @@ Future updates may simply involve replacing files on the MicroSD card.
 
 ## 🗃 Firmware Package Contents
 
-[Latest August 12th beta firmware download here.](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/43/#findComment-5700745)
+[Latest August 7th beta firmware download here.](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/42/#findComment-5698588)
 
 Download the `PPEB2.zip` unzip it, and you should have:
 
 | File / Folder | Purpose |
 |----------------|---------|
-| `PPEB2_2M.ino.uf2` | Main firmware binary for 2MB Version (Single PSRAM Chip) |
-| `PPEB2_8M.ino.uf2` | Main firmware binary for 8MB Version (Dual PSRAM Chip) |
+| `PPEB2_2M.ino.uf2`     | Main firmware binary for 2MB Version (Single PSRAM Chip) |
+| `PPEB2_8M.ino.uf2`     | Main firmware binary for 8MB Version (Dual PSRAM Chip) |
+| `PPEB2_SID.ino.uf2`    | SID emulation for PPEB (version that needs extra Pico 1) |
+| `PPEB2_SID_P2.ino.uf2` | SID emulation for PPEB (version that needs extra Pico 2) | 
 | `/ROMS/` | ROM, Bins, and Blank disk files |
+
+(**Note:**  You will use the SID firmware on the stand alone RPI Pico, and the PPEB_2M or PPEB_8M firmware on the actual PPEB.)
 
 ---
 
