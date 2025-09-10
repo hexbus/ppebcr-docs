@@ -1235,13 +1235,8 @@ This documentation started with a AI scrape from the original AtariAge thread, f
   - Author and Creator of the original Pi Pico W PEB firmware.  
   - Maintainer of ongoing firmware updates and feature expansions (only software, not hardware)
   - [October 2024 Source code and V2.1 Gerber, V3 Gerber, Dip Trace Files Click Here](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#findComment-5549700)
+  - Most current firmware will always be linked under the [firmware insatllation](#firmware-installation) section
 
-  - MAME "Speech Synthesizer" stuff... (see GitHub: rgrosset's pico-pwm-audio)
-
-    
-- **Latest Firmware Build (Page 28 Post #5639111):**  
-  - [Click Here](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111)
-   
 ---
 
 ## 🛠 Hardware Design & Board Work
