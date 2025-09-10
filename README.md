@@ -146,7 +146,7 @@ Download the `PPEB2.zip` unzip it, and you should have:
 
 ---
 
-## 🖥 Flashing Procedure
+## 🖥 Flashing Procedure for PPEB firmware (but steps 1 and 2 will work for the SID Pico and its firmware)
 
 > **⚠ NOTE:** The Pico W must be flashed BEFORE inserting it into the TI-99/4A system!
 
