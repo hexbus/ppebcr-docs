@@ -1305,6 +1305,7 @@ This documentation started with a AI scrape from the original AtariAge thread, f
 - The most recent full archive released by JasonACT is **PPEB2_Src.zip (October 16, 2024)**, attached here:  
   [AtariAge thread, Oct 16, 2024](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/?do=findComment&comment=5549947).  
 - Jason’s stated license for the combined firmware is **CC BY-NC-ND 4.0**, but inclusion of GPLv2 code (Resid16, Tursi, possibly keyboard) means that if binaries are distributed, **complete source code (including integration glue)** must also be made available. The last release was on October 16, 2024 (linked above), and Jason desires to keep his releases on AtariAge on the linked thread to meet compliance.
+- The Resid16 (sidkic-pico) source was released seperately inside the thread, as it lives on a seperate Pico board.
 - For personal builds compiled from source, no additional obligations apply.  
 
 The PPEB firmware and hardware integrate components from multiple upstream projects. Each retains its own license terms.
