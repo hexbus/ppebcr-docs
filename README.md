@@ -839,9 +839,7 @@ CALL MATHOFF
 
 - Fully emulates TI Speech Synthesizer using PWM audio on Pico GPIO.
 
-- Audio output routing:
-
- - Matches TI Speech DSR functionality for software compatibility.
+- Audio output routing: Matches TI Speech DSR functionality for software compatibility.
  
  - Outputs through console main channel output
    
@@ -865,7 +863,7 @@ PSNDO=1
 
 - Emulates multi-chip TI ForTI sound expansion:
 
-- Needs Blueooth connected for you to be able to use, and you might hear a slight delay
+- Needs Bluetooth connected for you to be able to use, and you might hear a slight delay
 
 ```ini
 FORTI=1  (or 2 or 3)
