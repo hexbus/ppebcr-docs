@@ -1311,7 +1311,7 @@ The PPEB firmware and hardware integrate components from multiple upstream proje
 | **lowzip**               | MIT                                  | https://github.com/edrosten/lowzip                          | Include license text and attribution. No source release required.                                                            |
 | **MAME speech (tms5110.cpp)** | BSD 3-Clause                    | https://github.com/mamedev/mame/blob/master/src/devices/sound/tms5110.cpp | Include license text and attribution. No source release required. |
 | **opt5.a99 (Jedimatt)**  | Unlicense (public domain)            | https://github.com/jedimatt42/ti994a-opt5                   | No requirements.                                                                                                             |
-| **Keyboard code**        | *Unclear — likely GPLv2*             | https://github.com/jedimatt42/TI-99-usb-keys/blob/main/LICENSE | Needs confirmation. If GPLv2 → full source disclosure like Resid16. If BSD/MIT → attribution only. |
+| **Keyboard code**        | None             | https://github.com/jedimatt42/TI-99-usb-keys/blob/main/LICENSE | Attribution only.  Verified no license needed due to only using structure.  See https://github.com/felis/USB_Host_Shield_2.0/issues/846 |
 | **Tursi (Mike Brent / HarmlessLion)** | GPLv2 (with permission) | http://harmlesslion.com                                     | JasonACT requested and received permission from Tursi to use portions of his GPL’d TI code in PPEB firmware (confirmed in AtariAge thread). This satisfies GPL obligations provided source is released alongside binaries. |
 
 
