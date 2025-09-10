@@ -1143,8 +1143,8 @@ Because PSRAM chips can vary significantly in timing tolerance, JasonACT develop
 
 ## 💾 Tool Provided
 
-- File: `memtest2.uf2`[memory tester](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/47/#findComment-5712651) - A Memory Test
-- Delivered as: `memtest2.ino.uf2.zip` (extract before use)
+- File: `memtest2.uf2` - Locate the latest memory test on [this thread](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/) on AtariAge
+- Delivered as: `*.memtest2.ino.uf2.zip` (extract before use)
 
 This is a standalone firmware image that runs on the Pico W outside of PPEB firmware.
 
