@@ -912,7 +912,6 @@ BTJ1=01:23:45:67:89:AB
 - Devices must be paired externally (e.g. via Windows/Linux) to obtain MAC.
 
 - Once bound, PPEB reconnects automatically at startup.
-
 ---
 
 # Troubleshooting Guide <a name="troubleshooting-guide"></a>
@@ -930,7 +929,7 @@ This section summarizes common problems, their likely causes, and solutions base
 | Symptom | Cause | Solution |
 |---------|-------|----------|
 | Random lockups or resets | Weak TI-99/4A power supply | Replace or rebuild power supply; verify voltage stability. |
-| Frequent freezes when loading ROMs | PSRAM instability | Use `memtest2.uf2` to verify PSRAM stability. Adjust `MHZ`, `NOPS`, and `NOPSW` in `autoload.cfg`. |
+| Frequent freezes when loading ROMs | PSRAM instability | Use `memtest2.uf2` (See Appendix B) to verify PSRAM stability. Adjust `MHZ`, `NOPS`, and `NOPSW` in `autoload.cfg`. |
 | Board not powering on | Faulty sideport edge connector or bad solder joints | Inspect all PCB solder joints, verify Pico power pins. |
 
 ---
@@ -1155,7 +1154,7 @@ This is a standalone firmware image that runs on the Pico W outside of PPEB firm
 
 1. Disconnect Pico W from PPEB board (or flash prior to full assembly).
 2. Connect Pico W to PC via MicroUSB while holding **BOOTSEL** button.
-3. Copy the latest version of `memtest2.uf2` as linked in Appendix B to the Pico W mass storage device (`RPI-RP2`).
+3. Copy the latest version of `memtest2.uf2` as linked above to the Pico W mass storage device (`RPI-RP2`).
 4. Pico will reboot into the memory tester.
 
 > ⚠ This test runs *without* the TI-99/4A attached.
