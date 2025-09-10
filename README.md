@@ -1144,7 +1144,7 @@ Because PSRAM chips can vary significantly in timing tolerance, JasonACT develop
 
 ## 💾 Tool Provided
 
-- File: `memtest2.uf2` (Memory Test)
+- File: `memtest2.uf2`[memory tester](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/47/#findComment-5712651) - A Memory Test
 - Delivered as: `memtest2.ino.uf2.zip` (extract before use)
 
 This is a standalone firmware image that runs on the Pico W outside of PPEB firmware.
@@ -1155,7 +1155,7 @@ This is a standalone firmware image that runs on the Pico W outside of PPEB firm
 
 1. Disconnect Pico W from PPEB board (or flash prior to full assembly).
 2. Connect Pico W to PC via MicroUSB while holding **BOOTSEL** button.
-3. Copy `memtest2.uf2` to the Pico W mass storage device (`RPI-RP2`).
+3. Copy the latest version of `memtest2.uf2` as linked in Appendix B to the Pico W mass storage device (`RPI-RP2`).
 4. Pico will reboot into the memory tester.
 
 > ⚠ This test runs *without* the TI-99/4A attached.
