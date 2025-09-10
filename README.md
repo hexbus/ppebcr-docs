@@ -159,8 +159,10 @@ Download the `PPEB2.zip` unzip it, and you should have:
 - Pick the Correct Firmware for your device - If you have 1 PSRam, then select the 2mb version, 2 PSRams, select the 8mb version.
 - Copy the file `PPEB.uf2` directly onto the Pico’s USB drive.  These files are only [located on AtariAge](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111).
 - After the file copies, the Pico will automatically reboot into PPEB mode.
-- It should blink 3 times when powered with no microsd inserted.
-- It should blink once when powered on with a microsd card with the correct files is inserted.
+
+Proper firmware installation is confirmed by the LED blink pattern on startup:
+- 3 blinks → No microSD card detected, or the SD card is missing required files.
+- 1 blink → MicroSD card detected with the correct files in place.  
 
 > ✅ Firmware is now installed and ready for use.
 
@@ -401,8 +403,11 @@ SNTP=pool.ntp.org
 | `C1MAP` | Map CS1 file | `C1MAP=/CS1/file` |
 | `C2MAP` | Map CS2 file | `C2MAP=/CS2/file` |
 | `CART` | Cartridge image to autoload | `CART=MyCart` |
-| `CART2`, `CART3` | Additional multi-bank cartridges | `CART2=AnotherCart` |
+| `CART2` (CART3 not used) | Additional multi-bank cartridges | `CART2=AnotherCart` |
 | `USBD` | USB stick override for DSK mapping | `USBD=1` (sets DSK1 to USB) |
+
+- CART note: `CART2` adds a Review Module Library entry on the TI title screen; `CART3` is not implemented due to memory contraints. (thread page 47)
+- USBD note: When IDE is enabled, the USB stick also appears as DSK3. Override with `USBD=1..9` if desired. (thread page 16, 34)
 
 ---
 
@@ -435,8 +440,8 @@ SNTP=pool.ntp.org
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| `PSNDO` | Enable Digi-Port 8-bit audio | `PSNDO=1` |
-| `FORTI` | ForTI sound card emulation (`0`=off, `1-3` modes) | `FORTI=1` | 
+| `PSNDO` | Enable Digi-Port 8-bit audio via Pico PWM | `PSNDO=1` |
+| `FORTI` | ForTI sound card emulation via Bluetooth (`0`=off, `1-3` modes) | `FORTI=1` | 
 | `FORTI=1` | one chip emulated    - plays left & right channel in mono the same as the TI | `FORTI=1` | 
 | `FORTI=2` | 4 chips emulated - plays in stereo, | `FORTI=2` | 
 | `FORTI=3` | 4 chips emulated - plays in mono | `FORTI=3` | 
@@ -623,7 +628,7 @@ The IDE emulation replicates Myarc-style hard disk functionality for compatible 
 
 ## 📂 File Structure on USB
 
-The USB stick must be formatted exFAT, and root directory should contain:
+Format the USB drive exFAT (recommended). RAW devices are also supported; FAT32 has been used in some tests.  (thread page 39) The root directory should contain:
 
 ```bash
 /
@@ -796,6 +801,8 @@ CALL PCODEOF
 
 ### Option 1 — Physical RS232 (3.3V - not on 8MB boards)
 
+- Physical UART requires single PSRAM (2MB build). For serial use, remove RESET=1 from autoload.cfg so TX isn’t repurposed (thread page 43)
+
 - Available via Pico's UART2 interface:
   - `GP8 → TX`
   - `GP9 → RX`
@@ -839,10 +846,10 @@ CALL MATHOFF
 
 - Fully emulates TI Speech Synthesizer using PWM audio on Pico GPIO.
 
-- Audio output routing: Matches TI Speech DSR functionality for software compatibility.
+- Matches TI Speech DSR functionality for software compatibility.
  
- - Outputs through console main channel output
-   
+- Audio output routing: PWM output from Pico is mixed to the sound input on the console 44 pin side car connector (confirmed)
+    
 ---
 
 ## 🔧 Digi-Port 8-bit Audio
@@ -855,7 +862,7 @@ CALL MATHOFF
 PSNDO=1
 ```
 
-- Output routed via PWM circuit alongside speech output.
+- Output routed via Pico PWM circuit alongside speech output and into the console 44 pin side car connector (confirmed)
 
 ---
 
@@ -863,7 +870,7 @@ PSNDO=1
 
 - Emulates multi-chip TI ForTI sound expansion:
 
-- Needs Bluetooth connected for you to be able to use, and you might hear a slight delay
+- ForTI output is sent to a Bluetooth speaker, and needs Bluetooth connected for you to be able to use, and you might hear a slight delay in the output
 
 ```ini
 FORTI=1  (or 2 or 3)
@@ -926,7 +933,7 @@ This section summarizes common problems, their likely causes, and solutions base
 | PPEB not detected at all | Missing SD card or unreadable card | Verify card inserted; reformat as FAT32 (MBR). |
 | Autoload failing | Corrupt or missing `autoload.cfg` | Verify syntax, file format (plain text). |
 | File not found errors | Incorrect directory structure | Verify SD card file/folder layout matches documentation. |
-| Random SD read failures | C4 capacitor still installed | **Remove C4** capacitor on PCB for full SD compatibility. |
+| Random SD read failures | Early Boards Only | set R4 ≈ 560Ω for SD stability; verify electrolytic capacitor polarity during assembly. (PEB release notes) |
 
 ---
 
@@ -949,21 +956,12 @@ This section summarizes common problems, their likely causes, and solutions base
 
 ---
 
-## 🔊 Speech Synth / Audio Issues
-
-| Symptom | Cause | Solution |
-|---------|-------|----------|
-| Distorted speech | PWM artifacts | Verify RC filter installed correctly. |
-| No audio output | No jack wired | Install optional audio output circuit. |
-
----
-
 ## 🎮 USB & Bluetooth Device Issues
 
 | Symptom | Cause | Solution |
 |---------|-------|----------|
 | USB devices not detected | Hub order issue | Use powered hub; verify enumeration order. |
-| Bluetooth device won't pair | Incorrect MAC address | Verify pairing on PC first; enter correct MAC into config. |
+| Bluetooth device won't pair | Incorrect MAC address | Pair on a PC to get the MAC → put MAC in autoload.cfg (BTJ1, etc.) → put device in pair mode → power TI → CALL UNMOUNT to save. |
 | Input lag or dropped presses | Heavy system load | Limit concurrent active features for best responsiveness. |
 
 ---
@@ -1091,7 +1089,7 @@ STL file design for printable enclosures
 | `C1MAP` | Path | Map CS1 file | *(none)* |
 | `C2MAP` | Path | Map CS2 file | *(none)* |
 | `CART` | Filename | Cartridge autoload | *(none)* |
-| `CART2`, `CART3` | Filename | Additional cartridge banks | *(none)* |
+| `CART2` (CART3 not used) | Filename | Additional cartridge banks | *(none)* |
 | `USBD` | 1–9 | Override DSKx device to USB | *(none)* |
 | `MMEM` | 0 or 1 | MiniMemory enable | 0 |
 | `MMMD` | 0 or 1 | MiniMemory mode: 8KB=0, 4KB=1 | 0 |
@@ -1125,7 +1123,7 @@ STL file design for printable enclosures
 - File paths are relative to SD root unless using full directory trees.
 - Paths are case-sensitive depending on SD card formatting.
 - MAC addresses for Bluetooth fields use uppercase `HH:HH:HH:HH:HH:HH` format.
-
+- CART2 adds a Review Module Library entry on the TI title screen; CART3 is not implemented due to memory constraints (thread page 47)
 ---
 
 # Appendix B — Memory Tester Usage <a name="appendix-b--memory-tester-usage"></a>
@@ -1142,7 +1140,7 @@ Because PSRAM chips can vary significantly in timing tolerance, JasonACT develop
 
 ## 💾 Tool Provided
 
-- File: `memtest2.uf2`
+- File: `memtest2.uf2` (Memory Test)
 - Delivered as: `memtest2.ino.uf2.zip` (extract before use)
 
 This is a standalone firmware image that runs on the Pico W outside of PPEB firmware.
@@ -1160,7 +1158,7 @@ This is a standalone firmware image that runs on the Pico W outside of PPEB firm
 
 ---
 
-## 🧪 Test Behavior
+## 🧪 Memory Test Tool Behavior
 
 - The Pico W will attempt repeated full PSRAM memory tests.
 - If an error occurs, onboard LED will flash blink codes indicating failure.
