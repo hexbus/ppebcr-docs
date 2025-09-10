@@ -10,7 +10,7 @@ Last update 09/10/2025
 - [Project Overview](#project-overview)  
 - [Safety Warnings](#safety-warnings)
 - [What This Manual Provides](#what-this-manual-provides)
-- [Assembly Guides](#AssemblyGuides)
+- [Assembly Guides](#assembly-guides)
 - [Firmware Installation](#firmware-installation)
 - [SD Card Preparation](#sd-card-preparation)
 - [Configuration File Reference (`autoload.cfg`)](#configuration-file-reference-autoloadcfg)
@@ -38,12 +38,11 @@ Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and 
 - Cartridge GROM/GRAM loader
 - Disk Controller with .DSK sector image support
 - IDE Hard Disk Emulation via USB stick
-- RS232 Serial Support (3.3V or TCP/IP socket - physical is not supported on 8MB boards)
 - TIPI Extensions Compatibility
 - USB Keyboard, Mouse, Joystick, Bluetooth HID support
 - Math Co-Processor for accelerated floating-point math
 - Digi-Port 8-bit audio output support
-- RS232 Support is provided via the Pico W's second UART at 3.3V logic levels. Not compatible with 8MB memory for Sams.
+- RS232 Serial Support (physical 3.3 V UART on 2 MB boards; TCP/IP socket on all builds; physical not supported on 8 MB boards).
   
 <br>
 
@@ -83,7 +82,7 @@ The PPEB project is built on the firmware and original hardware by **JasonACT** 
 - ✅ SD Card Setup  
 - ✅ Firmware Installation  
 - ✅ Configuration File Reference (`autoload.cfg`)  
-- ✅ TI BASIC Command Reference (`CALL TIPI`, `CALL EXPON`, etc.)  
+- ✅ TI BASIC Command Reference (`CALL PEBP` / legacy `CALL TIPI`, `CALL EXPON`, etc.)
 - ✅ IDE and USB Storage Setup  
 - ✅ Advanced Feature Documentation  
 - ✅ Troubleshooting Guide  
@@ -95,13 +94,13 @@ The PPEB project is built on the firmware and original hardware by **JasonACT** 
 
 There are 3 main versions of the PPEB.
 
-The original version with one PSRam (2Mb Sams)
-The updated v3 board with dual PSRam (8Mb Sams)
-The SMD version with dual PSRam (8mb Sams), reset button, and rear mounted MicroSd and USB Ports.  
+The original version with one PSRAM (2MB Sams)
+The updated v3 board with dual PSRAM (8MB Sams)
+The SMD version with dual PSRAM (8MB Sams), reset button, and rear mounted MicroSD and USB Ports.  
 
-## Assembly Guides <a name="AssemblyGuides"></a>
+## Assembly Guides <a name="assembly-guides"></a>
 
-Here you will find the guides for the different versions of the PPEB pcbs.
+Here you will find the guides for the different versions of the PPEB PCBs.
 
 [Click here for PPEB Version 2 & 3 Assembly guide](/PPEB-v2-V3.md)
 <br>
@@ -137,8 +136,8 @@ Download the `PPEB2.zip` unzip it, and you should have:
 
 | File / Folder | Purpose |
 |----------------|---------|
-| `PPEB2_2M.ino.uf2` | Main firmware binary for 2MB Version (Single PSRam Chip) |
-| `PPEB2_8M.ino.uf2` | Main firmware binary for 8MB Version (Dual PSRam Chip) |
+| `PPEB2_2M.ino.uf2` | Main firmware binary for 2MB Version (Single PSRAM Chip) |
+| `PPEB2_8M.ino.uf2` | Main firmware binary for 8MB Version (Dual PSRAM Chip) |
 | `/ROMS/` | ROM, Bins, and Blank disk files |
 
 ---
@@ -149,21 +148,22 @@ Download the `PPEB2.zip` unzip it, and you should have:
 
 ### 1️⃣ Connect Pico W
 
-- Do not have a Microsd card inserted.
+- Do not have a MicroSD card inserted.
 - Do not have anything plugged into the rear USB port.
 - Hold down the **BOOTSEL** button on your Pico W.
-- While holding the button, connect the Pico to your PC using a microUSB cable.
+- While holding the button, connect the Pico to your PC using a MicroUSB cable.
 - The Pico should appear as a USB mass storage device named **RPI-RP2**.
 
 ### 2️⃣ Flash UF2 Firmware
 
-- Pick the Correct Firmware for your device - If you have 1 PSRam, then select the 2mb version, 2 PSRams, select the 8mb version.
+- Pick the Correct Firmware for your device - If you have 1 PSRAM, then select the 2MB version, 2 PSRAMs, select the 8MB version.
 - Copy the file `PPEB.uf2` directly onto the Pico’s USB drive.  These files are only [located on AtariAge](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5639111).
 - After the file copies, the Pico will automatically reboot into PPEB mode.
 
-Proper firmware installation is confirmed by the LED blink pattern on startup:
-- 3 blinks → No microSD card detected, or the SD card is missing required files.
-- 1 blink → MicroSD card detected with the correct files in place.  
+**Startup LED blink check**
+
+- **3 blinks** → No MicroSD card detected, or the SD card is missing required files. (Expected with no card.)
+- **1 blink** → Common observed behavior when a MicroSD card with the correct files is present. (Some builds may differ slightly.)
 
 > ✅ Firmware is now installed and ready for use.
 
@@ -259,7 +259,7 @@ Your SD card root should contain the at least the following folders and files.
 These files are in the firmware package in the roms directory.  
 (You will have to create your own autoload.cfg of download the sample card image below that has a barebones file in it)
 
-The easiest way to do this is just copy the content of the roms directory to the root of your sd card.
+The easiest way to do this is just copy the content of the roms directory to the root of your SD card.
 
 ```
 /
@@ -276,12 +276,13 @@ Optional
 
 ```
 
-> NOTE THAT P-CODE files must reside in the **root** of the SD card if you wish to use PCode mode.
+> P-CODE files must be in the SD card root.  
+> `PCode.ROM` = 12 KB, `PCode.GRM` = 62–64 KB.
 
 
  A sample card image can be found here. [Download Sample Card Image](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/28/#findComment-5616188).
 
-Just unzip it to the root of your sdcard. If you have done this correctly you will have the following also appear in the root of the sdcard.
+Just unzip it to the root of your SD card. If you have done this correctly you will have the following also appear in the root of the SD card.
 
 
 
@@ -312,8 +313,8 @@ PASS=YourWiFiPassword
 SNTP=pool.ntp.org
 TZHR=-5
 TZMN=0
-D1MAP=/DSK1/BLNK.DSK
-CART=/PICOPEBG
+D1MAP=/BLNK.DSK
+CART=/PICOPEB
 RESET=1
 ```
 
@@ -346,8 +347,7 @@ ___
  
 **Automatic Loading of PPEB Menu from the TI Boot Screen**
 
-If you want your Pi Pico PEB to boot with a menu, be sure to get the PICOPEBG.BIN from the firmware pack in the ROMS directory
-<br>Unzip it and put it on your sd Card. And place the following in your autoload.cfg
+Place **PICOPEBG.BIN** on the **root** of the SD card, then add this to `autoload.cfg`:
 
 ```ini
 CART=/PICOPEB
@@ -356,8 +356,7 @@ If you have the reset button installed or a PPEB-cr version, then also add RESET
 (I think this is incompatible with a rs232 adapter installed,
 <br> I've not tested the rs232 function)
 
-
-
+> Note: On **single-PSRAM (2 MB)** builds, using the physical 3.3 V UART conflicts with the RESET-on-GPIO8 option. If you wire the UART, remove `RESET=1`.
 
 ---
 
@@ -399,16 +398,14 @@ SNTP=pool.ntp.org
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| `D1MAP` → `D9MAP` | Map DSK folders or images | `D1MAP=/DSK1/DISKNAME.DSK` |
-| `MAP1` → `MAP9` | (Alternative mapping commands) | Need to verify |
+| `D1MAP` → `D9MAP` | Map DSK folders or images | `D1MAP=/BLNK.DSK` |
 | `C1MAP` | Map CS1 file | `C1MAP=/CS1/file` |
 | `C2MAP` | Map CS2 file | `C2MAP=/CS2/file` |
 | `CART` | Cartridge image to autoload | `CART=MyCart` |
 | `CART2` (CART3 not used) | Additional multi-bank cartridges | `CART2=AnotherCart` |
-| `USBD` | USB stick override for DSK mapping | `USBD=1` (sets DSK1 to USB) |
+| `USBD` | If a USB stick is present, map **that** device as `DSKx` (choose 1–9) | `USBD=1` (maps USB to DSK1) |
 
-- CART note: `CART2` adds a Review Module Library entry on the TI title screen; `CART3` is not implemented due to memory contraints. (thread page 47)
-- USBD note: When IDE is enabled, the USB stick also appears as DSK3. Override with `USBD=1..9` if desired. (thread page 16, 34)
+- CART note: `CART2` adds a Review Module Library entry on the TI title screen; `CART3` is not implemented due to memory constraints. (thread page 47)
 
 ---
 
@@ -447,7 +444,7 @@ SNTP=pool.ntp.org
 | `FORTI=2` | 4 chips emulated - plays in stereo, | `FORTI=2` | 
 | `FORTI=3` | 4 chips emulated - plays in mono | `FORTI=3` | 
 
-Forti Sound is ONLY availble using a Bluetooth Speaker, it is not mixed into the onboard sound of the TI.
+Forti Sound is ONLY available using a Bluetooth Speaker, it is not mixed into the onboard sound of the TI.
 
 ---
 
@@ -482,7 +479,7 @@ Forti Sound is ONLY availble using a Bluetooth Speaker, it is not mixed into the
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| `PI.CLOCK` | Enables SNTP time setting | `PI.CLOCK=1` |
+| `PI.CLOCK` | Enables SNTP time setting (**note:** earlier builds defaulted to 0) | `PI.CLOCK=1` |
 | `PI.TCP` | Client-only TCP socket | *(Reserved for advanced users)* |
 | `SOCI` | Socket-to-keyboard interface | *(Reserved for advanced users)* |
 
@@ -502,9 +499,12 @@ Forti Sound is ONLY availble using a Bluetooth Speaker, it is not mixed into the
 
 ## 📋 Overview
 
-The PPEB adds numerous device service routines (DSRs) and control commands accessible directly from TI BASIC, Extended BASIC, and Assembly programs.
+The PPEB adds numerous device service routines (DSRs) and control commands accessible directly from TI BASIC, Extended BASIC, and assembly programs.
 
 This section documents all supported `CALL` commands.
+
+> **Note on command name:** On newer builds, `CALL PEBP` replaces `CALL TIPI`.  
+> Many setups autostart the PPEB menu at boot, so you may not need to type either command.
 
 ---
 
@@ -512,7 +512,7 @@ This section documents all supported `CALL` commands.
 
 | Command | Description |
 |---------|-------------|
-| `CALL TIPI` | Launch TIPI menu browser — allows loading cartridges, modules, and configurations. |
+| `CALL PEBP` (or legacy `CALL TIPI`) | Launch the PPEB/TIPI-style menu browser — allows loading cartridges, modules, and configurations. |
 | `CALL UNMOUNT` | Cleanly unmount SD card before removal (remounts automatically on next access). |
 
 ---
@@ -543,7 +543,7 @@ This section documents all supported `CALL` commands.
 
 | Command | Description |
 |---------|-------------|
-| `CALL FILES(n)` | List files for DSKn device. Only supported if CRU address is >1100. |
+| `CALL FILES(n)` | List files for DSKn. **Requires CRU base >1100h**. |
 | `CALL PASTE("/file")` | Send contents of file as simulated keyboard input via CRU interface. Use `:` suffix for manual F10 start. |
 
 ---
@@ -628,9 +628,9 @@ The IDE emulation replicates Myarc-style hard disk functionality for compatible 
 
 ## 📂 File Structure on USB
 
-Format the USB drive exFAT (recommended). RAW devices are also supported; FAT32 has been used in some tests.  (thread page 39) The root directory should contain:
+Format the USB drive **exFAT** (recommended). RAW devices are also supported; FAT32 has worked in some tests.
 
-> Note: The **microSD** card used for the PPEB must be FAT32 (MBR). The **USB** drive used for IDE images can be exFAT (recommended) or RAW; FAT32 has also worked in tests.
+> Note: The **MicroSD** card used for the PPEB must be FAT32 (MBR). The **USB** drive used for IDE images can be exFAT (recommended) or RAW; FAT32 has also worked in tests.
 
 ```bash
 /
@@ -638,7 +638,7 @@ Format the USB drive exFAT (recommended). RAW devices are also supported; FAT32 
 ├── harddisk2.dat      <-- IDE drive 2 image (optional)
 ```
 
-- Subdirectories are not recommend
+- Subdirectories are not recommended.
 - Image files are raw sector dumps, not filesystem dumps.
 - File sizes up to ~2GB per image supported.   Large images have been tested; for reliability keep each image ≤ ~2 GB.
 - Images may contain multiple partitions, formatted using Myarc HD utilities.
@@ -657,6 +657,14 @@ HARDDISK2=harddisk2.dat
 
 - `IDE=1` activates IDE functionality.
 - Filenames must match exactly (case-sensitive).
+
+## Minimal `autoload.cfg` for IDE testing
+
+```ini
+CART=/PICOPEB
+IDE=1
+HARDDISK1=harddisk1.dat
+```
 
 ---
 
@@ -713,11 +721,11 @@ This section summarizes each advanced subsystem available once fully configured.
 ## 🔧 SAMS Memory Expansion
 
 - Fully supports 1MB or 8MB SAMS configurations.
-  - Supports SAMS paging up to 8 MB on dual-PSRAM boards (2 MB on single-PSRAM).
+  - On dual-PSRAM boards, SAMS paging up to **8 MB** is supported and has been exercised in demos/utilities; single-PSRAM boards support **2 MB**.
 Notes:
   - Most classic software was written for ≤1 MB, but newer builds/demos use >1 MB.
   - PPEB firmware and tooling have examples showing 8 MB setups working on dual-PSRAM boards.
-
+   
 - Uses external PSRAM modules connected to Pico W.
 - Activated automatically when present.
 - SAMS memory functions as expanded RAM for compatible software.
@@ -793,6 +801,9 @@ CALL PCODEOF
 
 - ⚠ Always use `H` (Halt) in PCode OS before disabling.
 
+> **P-CODE files must reside in the SD card root.**  
+> `PCode.ROM` is **12 KB**; `PCode.GRM` is **62–64 KB** depending on dump.
+
 ---
 
 ## 🔧 TIPI Extensions
@@ -808,6 +819,8 @@ CALL PCODEOF
 ---
 
 ## 🔧 RS232 Serial Interfaces: physical 3.3 V UART (single-PSRAM/2 MB build only) or TCP/IP socket (RS232/2) over Wi-Fi.
+
+> **8 MB (dual-PSRAM) builds do not expose the physical 3.3 V UART; all RS232 devices map to the Wi-Fi socket server.**
 
 ### Option 1 — Physical RS232 (3.3V - not on 8MB boards)
 
@@ -825,14 +838,8 @@ BAUD=9600
 
 ### Option 2 — TCP/IP Socket RS232
 
-- Virtual serial via WiFi over port `2322`.
-
-- Accessed as:
-
-```bash
-RS232/2
-```
-
+- Virtual serial over Wi-Fi on **TCP port 2322**
+- Accessed on the TI as: `RS232/2`
 - Allows remote terminal access using modern PC terminal programs.
 
 ---
@@ -855,8 +862,8 @@ CALL MATHOFF
 - Fully emulates TI Speech Synthesizer using PWM audio on Pico GPIO.
 
 - Matches TI Speech DSR functionality for software compatibility.
- 
-- Audio output routing: PWM output from Pico is mixed to the sound input on the console 44 pin side car connector (confirmed)
+
+- Audio routing: PWM speech is **mixed into the TI console sound input** via the 44-pin sidecar connector, so you hear it on your normal monitor/speakers.
     
 ---
 
@@ -870,7 +877,7 @@ CALL MATHOFF
 PSNDO=1
 ```
 
-- Output routed via Pico PWM circuit alongside speech output and into the console 44 pin side car connector (confirmed)
+- Output routing: Digi-Port PCM is generated by Pico PWM and **mixed into the console sound input** on the 44-pin sidecar connector.
 
 ---
 
@@ -883,12 +890,6 @@ PSNDO=1
 ```ini
 FORTI=1  (or 2 or 3)
 ```
-
-| Mode | Description |
-|------|-------------|
-| `1` | One chip, mono output |
-| `2` | All 4 chips, stereo output |
-| `3` | All 4 chips, mono mixdown |
 
 ---
 
@@ -941,7 +942,6 @@ This section summarizes common problems, their likely causes, and solutions base
 | PPEB not detected at all | Missing SD card or unreadable card | Verify card inserted; reformat as FAT32 (MBR). |
 | Autoload failing | Corrupt or missing `autoload.cfg` | Verify syntax, file format (plain text). |
 | File not found errors | Incorrect directory structure | Verify SD card file/folder layout matches documentation. |
-| Random SD read failures | Early Boards Only | set R4 ≈ 560Ω for SD stability; verify electrolytic capacitor polarity during assembly. (PEB release notes) |
 
 ---
 
@@ -1038,17 +1038,14 @@ STL file design for printable enclosures
 |---------|-------|
 | Layer Height | 0.2mm |
 | Infill | 20% |
-| Supports | Not required (self-supporting design) |
+| Supports | **Not required (self-supporting design)** |
 | Material | PLA, PETG, or ASA |
 | Print Orientation | Flat on bed, face-down recommended |
 | Wall Count | 3+ walls for durability |
-| Supports | Not Needed for most printers |
-
-
 
 ---
 
-## 🔩 Assembly Hardware
+## 🔩 Assembling Hardware
 
 |Version| Part | Quantity | |
 |------|----------|-----|----|
@@ -1084,7 +1081,7 @@ STL file design for printable enclosures
 
 | Parameter | Value Type | Description | Default |
 |-----------|------------|-------------|---------|
-| `CRU` | Integer (Hex Digit 0–D) | DSR CRU Base Offset (×100h) | 1 |
+| `CRU` | Integer (Hex Digit 0–D) | CRU base >1100h | 1 |
 | `BAUD` | Integer | RS232 baud rate | 9600 |
 | `WIFI` | String | WiFi SSID | *(none)* |
 | `PASS` | String | WiFi password | *(none)* |
@@ -1093,7 +1090,6 @@ STL file design for printable enclosures
 | `TZMN` | Integer | Timezone offset (minutes) | 0 |
 | `TMFT` | 0 or 1 | Date format: 0=US, 1=AU | 0 |
 | `D1MAP`–`D9MAP` | Path | Map DSK1–DSK9 to folders or .DSK images | *(none)* |
-| `MAP1`–`MAP9` | Path | Alternative disk mappings | *(none)* |
 | `C1MAP` | Path | Map CS1 file | *(none)* |
 | `C2MAP` | Path | Map CS2 file | *(none)* |
 | `CART` | Filename | Cartridge autoload | *(none)* |
@@ -1122,7 +1118,7 @@ STL file design for printable enclosures
 | `PI.CLOCK` | 0 or 1 | Enable SNTP clock sync | 1 |
 | `PI.TCP` | String | Client socket address | *(reserved)* |
 | `SOCI` | 0 or 1 | Socket-keyboard input routing | *(reserved)* |
-| `RESET` | 0 or 1 | Enable Reset Pin on GPIO8 | *0* |
+| `RESET` | 0 or 1 | Enable Reset Pin on GPIO8 | 0 |
 ---
 
 ## 📝 Notes:
@@ -1158,7 +1154,7 @@ This is a standalone firmware image that runs on the Pico W outside of PPEB firm
 ## 🖥 Flashing Procedure
 
 1. Disconnect Pico W from PPEB board (or flash prior to full assembly).
-2. Connect Pico W to PC via microUSB while holding **BOOTSEL** button.
+2. Connect Pico W to PC via MicroUSB while holding **BOOTSEL** button.
 3. Copy `memtest2.uf2` to the Pico W mass storage device (`RPI-RP2`).
 4. Pico will reboot into the memory tester.
 
@@ -1170,6 +1166,8 @@ This is a standalone firmware image that runs on the Pico W outside of PPEB firm
 
 - The Pico W will attempt repeated full PSRAM memory tests.
 - If an error occurs, onboard LED will flash blink codes indicating failure.
+
+**Startup LED blink check (normal behavior):**
 
 | LED Blink Pattern | Meaning |
 |--------------------|---------|
@@ -1210,7 +1208,7 @@ NOPSW=5
 
 ---
 
-The PPEB project is from JasonACT, who developed the orignal hardware and software.
+The PPEB project is from JasonACT, who developed the original hardware and software.
 
 This documentation started with a AI scrape from the original AtariAge thread, firmware releases, hardware designs, and builder discussions.
 
@@ -1299,7 +1297,7 @@ This documentation started with a AI scrape from the original AtariAge thread, f
 - PPEB firmware sources are available in the AtariAge thread.  
 - The most recent full archive released by JasonACT is **PPEB2_Src.zip (October 16, 2024)**, attached here:  
   [AtariAge thread, Oct 16, 2024](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/?do=findComment&comment=5549947).  
-- Jason’s stated license for the combined firmware is **CC BY-NC-ND 4.0**, but inclusion of GPLv2 code (Resid16, Tursi, possibly keyboard) means that if binaries are distributed, **complete source code (including integration glue)** must also be made available (which the last one is from October 16, 2024), above.)
+- Jason’s stated license for the combined firmware is **CC BY-NC-ND 4.0**, but inclusion of GPLv2 code (Resid16, Tursi, possibly keyboard) means that if binaries are distributed, **complete source code (including integration glue)** must also be made available. The last release was on October 16, 2024 (linked above).
 - For personal builds compiled from source, no additional obligations apply.  
 
 The PPEB firmware and hardware integrate components from multiple upstream projects. Each retains its own license terms.
@@ -1311,7 +1309,7 @@ The PPEB firmware and hardware integrate components from multiple upstream proje
 | **lowzip**               | MIT                                  | https://github.com/edrosten/lowzip                          | Include license text and attribution. No source release required.                                                            |
 | **MAME speech (tms5110.cpp)** | BSD 3-Clause                    | https://github.com/mamedev/mame/blob/master/src/devices/sound/tms5110.cpp | Include license text and attribution. No source release required. |
 | **opt5.a99 (Jedimatt)**  | Unlicense (public domain)            | https://github.com/jedimatt42/ti994a-opt5                   | No requirements.                                                                                                             |
-| **Keyboard code**        | None             | https://github.com/jedimatt42/TI-99-usb-keys/blob/main/LICENSE | Attribution only.  Verified no license needed due to only using structure.  See https://github.com/felis/USB_Host_Shield_2.0/issues/846 |
+| **Keyboard code**        | None (structural code only, attribution sufficient)  | https://github.com/jedimatt42/TI-99-usb-keys/blob/main/LICENSE | Attribution only.  Verified no license needed due to only using structure.  See https://github.com/felis/USB_Host_Shield_2.0/issues/846 |
 | **Tursi (Mike Brent / HarmlessLion)** | GPLv2 (with permission) | http://harmlesslion.com                                     | JasonACT requested and received permission from Tursi to use portions of his GPL’d TI code in PPEB firmware (confirmed in AtariAge thread). This satisfies GPL obligations provided source is released alongside binaries. |
 
 
