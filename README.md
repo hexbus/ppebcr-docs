@@ -2,6 +2,7 @@
 *Complete Build & User Manual — TI-99/4A Sideport Expansion*
 
 ## *THIS IS DRAFT and I accept pull/merge requests with corrections to fix mistakes.*
+Last update 09/10/2025
 
 > *(Click any section below to jump directly to that part of the manual.)*
 # 📑 Table of Contents
@@ -32,7 +33,7 @@ Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and 
 
 - Speech Synthesizer (PWM Emulated)
 - 32K RAM Expansion
-- SAMS Memory (2MB/8MB PSRAM)
+- SAMS Memory (up to 8 MB on dual-PSRAM boards; 2 MB on single-PSRAM)
 - Myarc RAM (512K)
 - Cartridge GROM/GRAM loader
 - Disk Controller with .DSK sector image support
@@ -312,7 +313,7 @@ SNTP=pool.ntp.org
 TZHR=-5
 TZMN=0
 D1MAP=/DSK1/BLNK.DSK
-CART=/PICOPEB
+CART=/PICOPEBG
 RESET=1
 ```
 
@@ -512,7 +513,6 @@ This section documents all supported `CALL` commands.
 | Command | Description |
 |---------|-------------|
 | `CALL TIPI` | Launch TIPI menu browser — allows loading cartridges, modules, and configurations. |
-| `CALL TIPI("/cartname")` | Directly load a cartridge ROM or GROM image from SD card. |
 | `CALL UNMOUNT` | Cleanly unmount SD card before removal (remounts automatically on next access). |
 
 ---
@@ -630,6 +630,8 @@ The IDE emulation replicates Myarc-style hard disk functionality for compatible 
 
 Format the USB drive exFAT (recommended). RAW devices are also supported; FAT32 has been used in some tests.  (thread page 39) The root directory should contain:
 
+> Note: The **microSD** card used for the PPEB must be FAT32 (MBR). The **USB** drive used for IDE images can be exFAT (recommended) or RAW; FAT32 has also worked in tests.
+
 ```bash
 /
 ├── harddisk1.dat      <-- IDE drive 1 image
@@ -638,7 +640,7 @@ Format the USB drive exFAT (recommended). RAW devices are also supported; FAT32 
 
 - Subdirectories are not recommend
 - Image files are raw sector dumps, not filesystem dumps.
-- File sizes up to ~2GB per image supported.
+- File sizes up to ~2GB per image supported.   Large images have been tested; for reliability keep each image ≤ ~2 GB.
 - Images may contain multiple partitions, formatted using Myarc HD utilities.
 
 ---
@@ -711,6 +713,11 @@ This section summarizes each advanced subsystem available once fully configured.
 ## 🔧 SAMS Memory Expansion
 
 - Fully supports 1MB or 8MB SAMS configurations.
+  - Supports SAMS paging up to 8 MB on dual-PSRAM boards (2 MB on single-PSRAM).
+Notes:
+  - Most classic software was written for ≤1 MB, but newer builds/demos use >1 MB.
+  - PPEB firmware and tooling have examples showing 8 MB setups working on dual-PSRAM boards.
+
 - Uses external PSRAM modules connected to Pico W.
 - Activated automatically when present.
 - SAMS memory functions as expanded RAM for compatible software.
@@ -722,6 +729,9 @@ This section summarizes each advanced subsystem available once fully configured.
 
 - Emulates Myarc 512KB RAM card for compatible software.
 - Swaps SAMS space dynamically to operate within Myarc RAM specifications.
+
+*Note: Enabling Myarc 512 KB mode disables SAMS since they share the CRU base/memory space.*
+
 - Controlled by:
 
 ```ini
@@ -797,11 +807,9 @@ CALL PCODEOF
 
 ---
 
-## 🔧 RS232 Serial Interfaces
+## 🔧 RS232 Serial Interfaces: physical 3.3 V UART (single-PSRAM/2 MB build only) or TCP/IP socket (RS232/2) over Wi-Fi.
 
 ### Option 1 — Physical RS232 (3.3V - not on 8MB boards)
-
-- Physical UART requires single PSRAM (2MB build). For serial use, remove RESET=1 from autoload.cfg so TX isn’t repurposed (thread page 43)
 
 - Available via Pico's UART2 interface:
   - `GP8 → TX`
@@ -952,7 +960,7 @@ This section summarizes common problems, their likely causes, and solutions base
 |---------|-------|----------|
 | IDE not recognized | USB stick not detected | Use name-brand USB stick; verify hub connection order. |
 | Drive not formatted | Blank image | Use Myarc tools to partition & format images beforehand. |
-| Image won't load | Image file too large | Stay below 2GB per image file. |
+| Image won't load | Image file too large |  Large images have been tested; for reliability keep each image ≤ ~2 GB. |
 
 ---
 
@@ -1084,7 +1092,7 @@ STL file design for printable enclosures
 | `TZHR` | Integer | Timezone offset (hours) | 0 |
 | `TZMN` | Integer | Timezone offset (minutes) | 0 |
 | `TMFT` | 0 or 1 | Date format: 0=US, 1=AU | 0 |
-| `DSK1`–`DSK9` | Path | Map directories or disk images | *(none)* |
+| `D1MAP`–`D9MAP` | Path | Map DSK1–DSK9 to folders or .DSK images | *(none)* |
 | `MAP1`–`MAP9` | Path | Alternative disk mappings | *(none)* |
 | `C1MAP` | Path | Map CS1 file | *(none)* |
 | `C2MAP` | Path | Map CS2 file | *(none)* |
@@ -1283,6 +1291,29 @@ This documentation started with a AI scrape from the original AtariAge thread, f
   - Full PPEB documentation authoring  
   - GitHub-ready Markdown conversion  
   - Community archival release packaging - it's what I do :)
+
+---
+
+## 📜 Licensing & Source
+
+- PPEB firmware sources are available in the AtariAge thread.  
+- The most recent full archive released by JasonACT is **PPEB2_Src.zip (October 16, 2024)**, attached here:  
+  [AtariAge thread, Oct 16, 2024](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/?do=findComment&comment=5549947).  
+- Jason’s stated license for the combined firmware is **CC BY-NC-ND 4.0**, but inclusion of GPLv2 code (Resid16, Tursi, possibly keyboard) means that if binaries are distributed, **complete source code (including integration glue)** must also be made available (which the last one is from October 16, 2024), above.)
+- For personal builds compiled from source, no additional obligations apply.  
+
+The PPEB firmware and hardware integrate components from multiple upstream projects. Each retains its own license terms.
+
+| Component                | License                              | Upstream Repo                                                | Requirements                                                                                                                 |
+|--------------------------|--------------------------------------|-------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| **Resid16 (sidkick-pico)** | GPLv2 (software)<br>+ CC BY-NC-ND 4.0 (hardware) | https://github.com/frntc/SIDKick-pico                       | If a binary (UF2) contains this code, you must provide the complete corresponding source for that binary, including any glue code. If it’s run as a separate firmware on a separate Pico, only that firmware’s source needs to be released. The CC BY-NC-ND hardware license applies only if you use or distribute their PCB design — not if run on a plain Raspberry Pi Pico.  (Note: Jason released the source in the thread for the Pico code, which runs on its own Pico.) |
+| **Pico-SDK**             | BSD 3-Clause                         | https://github.com/raspberrypi/pico-sdk                     | Include license text and attribution in distribution. No source release required.                                           |
+| **lowzip**               | MIT                                  | https://github.com/edrosten/lowzip                          | Include license text and attribution. No source release required.                                                            |
+| **MAME speech (tms5110.cpp)** | BSD 3-Clause                    | https://github.com/mamedev/mame/blob/master/src/devices/sound/tms5110.cpp | Include license text and attribution. No source release required. |
+| **opt5.a99 (Jedimatt)**  | Unlicense (public domain)            | https://github.com/jedimatt42/ti994a-opt5                   | No requirements.                                                                                                             |
+| **Keyboard code**        | *Unclear — likely GPLv2*             | https://github.com/jedimatt42/TI-99-usb-keys/blob/main/LICENSE | Needs confirmation. If GPLv2 → full source disclosure like Resid16. If BSD/MIT → attribution only. |
+| **Tursi (Mike Brent / HarmlessLion)** | GPLv2 (with permission) | http://harmlesslion.com                                     | JasonACT requested and received permission from Tursi to use portions of his GPL’d TI code in PPEB firmware (confirmed in AtariAge thread). This satisfies GPL obligations provided source is released alongside binaries. |
+
 
 ---
 
