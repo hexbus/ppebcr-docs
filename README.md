@@ -1177,6 +1177,8 @@ This is a standalone firmware image that runs on the Pico W outside of PPEB firm
 
 - The test runs continuously to catch intermittent errors caused by marginal chips or thermal changes.
 
+- Ensure you flash the regular PPEB firmware back to the unit after completing the memory test.
+
 ---
 
 ## 🔧 Adjusting Pico Timing
