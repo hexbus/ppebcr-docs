@@ -318,7 +318,7 @@ CART=/PICOPEB
 RESET=1
 ```
 
-> A full list of all supported configuration fields will be documented in the [Configuration Reference](#configuration-reference).
+> A full list of all supported configuration fields will be documented in the [Configuration Reference](#configuration-file-reference-autoloadcfg).
 
 ---
 
