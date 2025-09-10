@@ -1298,7 +1298,7 @@ This documentation started with a AI scrape from the original AtariAge thread, f
 - PPEB firmware sources are available in the AtariAge thread.  
 - The most recent full archive released by JasonACT is **PPEB2_Src.zip (October 16, 2024)**, attached here:  
   [AtariAge thread, Oct 16, 2024](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/?do=findComment&comment=5549947).  
-- Jason’s stated license for the combined firmware is **CC BY-NC-ND 4.0**, but inclusion of GPLv2 code (Resid16, Tursi, possibly keyboard) means that if binaries are distributed, **complete source code (including integration glue)** must also be made available. The last release was on October 16, 2024 (linked above), and Jason desires to keep his releases on AtariAge on the linked thread to meet compliance.
+- Jason’s stated license for the combined firmware is **CC BY-NC-ND 4.0**.  The last release was on October 16, 2024 (linked above), and Jason desires to keep his releases on AtariAge on the linked thread to meet said compliance.
 - The Resid16 (sidkic-pico) source was released seperately inside the thread, as it lives on a seperate Pico board.
 - For personal builds compiled from source, no additional obligations apply.  
 
@@ -1312,7 +1312,7 @@ The PPEB firmware and hardware integrate components from multiple upstream proje
 | **MAME speech (tms5110.cpp)** | BSD 3-Clause                    | https://github.com/mamedev/mame/blob/master/src/devices/sound/tms5110.cpp | Include license text and attribution. No source release required. |
 | **opt5.a99 (Jedimatt)**  | Unlicense (public domain)            | https://github.com/jedimatt42/ti994a-opt5                   | No requirements.                                                                                                             |
 | **Keyboard code**        | None (structural code only, attribution sufficient)  | https://github.com/jedimatt42/TI-99-usb-keys/blob/main/LICENSE | Attribution only.  Verified no license needed due to only using structure.  See https://github.com/felis/USB_Host_Shield_2.0/issues/846 |
-| **Tursi (Mike Brent / HarmlessLion)** | GPLv2 (with permission) | http://harmlesslion.com                                     | JasonACT requested and received permission from Tursi to use portions of his GPL’d TI code in PPEB firmware (confirmed in AtariAge thread). This satisfies GPL obligations provided source is released alongside binaries. |
+| **Tursi (Mike Brent / HarmlessLion)** | "Please tell me when you use my code" | http://harmlesslion.com                                     | JasonACT requested and received permission from Tursi to use portions of his TI code in PPEB firmware (confirmed in AtariAge [thread](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/42/#findComment-5700703). |
 
 
 ---
