@@ -1177,11 +1177,7 @@ This is a standalone firmware image that runs on the Pico W outside of PPEB firm
 
 - The test runs continuously to catch intermittent errors caused by marginal chips or thermal changes.
 
-- Ensure you flash the regular PPEB firmware back to the unit after completing the memory test.
-
----
-
-## 🔧 Adjusting Pico Timing
+### 🔧 Adjusting Pico Timing if errors detected
 
 If memory errors are detected, you may tune firmware timing via `autoload.cfg`:
 
@@ -1194,6 +1190,10 @@ NOPSW=5
 - Lower `MHZ` values slow Pico clock speed for stability.
 - `NOPS` and `NOPSW` introduce deliberate read/write delays.
 - Use the memory test tool after adjustments to confirm stability before flashing final PPEB firmware.
+
+### Return the unit back to regular firmware when done
+
+- Ensure you flash the regular PPEB firmware back to the unit after completing the memory test.
 
 ---
 
