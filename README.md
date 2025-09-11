@@ -145,7 +145,8 @@ Download the `PPEB2.zip` unzip it, and you should have:
 
 ---
 
-## 🖥 Flashing Procedure for PPEB firmware (but steps 1 and 2 will work for the SID Pico and its firmware)
+## 🖥 Flashing Procedure for PPEB firmware 
+### (also: steps 1 and 2 will work for the secondary SID Pico and its firmware)
 
 > **⚠ NOTE:** The Pico W must be flashed BEFORE inserting it into the TI-99/4A system!
 
@@ -1234,7 +1235,7 @@ This documentation started with a AI scrape from the original AtariAge thread, f
   - Author and Creator of the original Pi Pico W PEB firmware.  
   - Maintainer of ongoing firmware updates and feature expansions (only software, not hardware)
   - [October 2024 Source code and V2.1 Gerber, V3 Gerber, Dip Trace Files Click Here](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/22/#findComment-5549700)
-  - Most current firmware will always be linked under the [firmware insatllation](#firmware-installation) section
+  - Most current firmware will always be linked under the [firmware installation](#firmware-installation) section
 
 ---
 
