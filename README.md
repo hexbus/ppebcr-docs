@@ -81,7 +81,7 @@ The PPEB project is built on the firmware and original hardware by **JasonACT** 
 - ✅ SD Card Setup  
 - ✅ Firmware Installation  
 - ✅ Configuration File Reference (`autoload.cfg`)  
-- ✅ TI BASIC Command Reference (`CALL PEBP` / legacy `CALL TIPI`, `CALL EXPON`, etc.)
+- ✅ TI BASIC Command Reference (`CALL PPEB` / legacy `CALL TIPI`, `CALL EXPON`, etc.)
 - ✅ IDE and USB Storage Setup  
 - ✅ Advanced Feature Documentation  
 - ✅ Troubleshooting Guide  
@@ -507,7 +507,7 @@ The PPEB adds numerous device service routines (DSRs) and control commands acces
 
 This section documents all supported `CALL` commands.
 
-> **Note on command name:** On newer builds, `CALL PEBP` replaces `CALL TIPI`.  
+> **Note on command name:** On newer builds, `CALL PPEB` replaces `CALL TIPI`.  
 > Many setups autostart the PPEB menu at boot, so you may not need to type either command.
 
 ---
@@ -516,7 +516,7 @@ This section documents all supported `CALL` commands.
 
 | Command | Description |
 |---------|-------------|
-| `CALL PEBP` (or legacy `CALL TIPI`) | Launch the PPEB/TIPI-style menu browser — allows loading cartridges, modules, and configurations. |
+| `CALL PPEB` (or legacy `CALL TIPI`) | Launch the PPEB/TIPI-style menu browser — allows loading cartridges, modules, and configurations. |
 | `CALL UNMOUNT` | Cleanly unmount SD card before removal (remounts automatically on next access). |
 
 ---
