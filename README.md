@@ -383,7 +383,8 @@ SNTP=pool.ntp.org
 
 ---
 
-## 🖧 System Configuration
+## 🖧 System Configuration Example Settings
+(Note: Full file settings are available here:  https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/55/#findComment-5736055)
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
@@ -765,7 +766,10 @@ CALL MYARCOF
 - Controlled by:
 
 ```ini
-PLAYT=1
+PLAYT=0 (Off)
+PLAYT=1 (On, but with no interface to Serial/WiFi - just a 4KB RAM DSR for testing stuff)
+PLAYT=2 (On, with an interface to Serial - set MODE and BAUD for this to work)
+PLAYT=3 (On, with an interface to WiFi - no need to set MODE and BAUD)
 ```
 
 ---
@@ -1103,7 +1107,7 @@ STL file design for printable enclosures
 | `PCODE` | 0 or 1 | Enable PCode card | 0 |
 | `MYARC` | 0 or 1 | Enable Myarc 512K | 0 |
 | `RAMBO` | 0 or 1 | Enable SAMS at >4000h | 0 |
-| `PLAYT` | 0 or 1 | Enable PlayThing ROM | 0 |
+| `PLAYT` | 0–3 | Enable PlayThing ROM | 0 |
 | `MHZ` | 250–280 (even) | Pico CPU frequency (MHz) | Build default |
 | `NOPS` | 1–9 | Memory read delay cycles | 5 |
 | `NOPSW` | 1–9 | Memory write delay cycles | 5 |
