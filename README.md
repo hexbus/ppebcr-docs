@@ -129,7 +129,7 @@ Future updates may simply involve replacing files on the MicroSD card.
 
 ## 🗃 Firmware Package Contents
 
-[Latest August 7th beta firmware download here.](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/42/#findComment-5698588)
+[Latest October 4th beta firmware download here.]([https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/42/#findComment-569858](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/page/54/#findComment-5726331)8)
 
 Download the `PPEB2.zip` unzip it, and you should have:
 
