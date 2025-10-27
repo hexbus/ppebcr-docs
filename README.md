@@ -1,5 +1,5 @@
 # PPEB (formal name: Pi Pico W Peripheral Expansion Box Side Port Device)  
-*Complete Build & User Manual — TI-99/4A Sideport Expansion* - Last update 09/10/2025
+*Complete Build & User Manual — TI-99/4A Sideport Expansion* - Last update 10/27/2025
 
 ### Wherever possible, we use [reference.txt](https://github.com/hexbus/ppebcr-docs/blob/main/reference.txt) as the authoritative source, with the [AtariAge thread](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/) as a secondary reference. This is a living, community-maintained doc—PRs and issue reports to fix mistakes are welcome.
 
