@@ -733,7 +733,7 @@ Notes:
 - Uses external PSRAM modules connected to Pico W.
 - Activated automatically when present.
 - SAMS memory functions as expanded RAM for compatible software.
-- Works with FinalGROM99, RXB, Myarc DOS, UCSD PCode, etc.
+- Works with FinalGROM99, RXB, UCSD PCode, etc.
 
 ---
 
