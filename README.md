@@ -122,9 +122,6 @@ The firmware package includes:
 - DSR files
 - Support files for SD card structure
 
-You only need to flash the UF2 file once to load the firmware onto the Pico W.  
-Future updates may simply involve replacing files on the MicroSD card.
-
 ---
 
 ## 🗃 Firmware Package Contents
@@ -220,7 +217,6 @@ This section provides a complete guide to:
 
 ## ⚠️ DO NOT USE:
 
-- exFAT format
 - GPT partition tables
 - Cards with manufacturer "quick formats"
 - SDXC cards larger than 32GB (unless specially pre-formatted for FAT32)
@@ -370,8 +366,8 @@ If you have the reset button installed or a PPEB-cr version, then also add RESET
 - Format: Plain text (ASCII)
 - One setting per line: `KEY=VALUE`
 - No quotes needed around values
-- Blank lines and comment lines (starting with `#`) are allowed
-
+- Blank lines and comment lines (starting with `;`) are allowed
+- Maximum of 2048 Characters are read, the rest are ignored.
 Example:
 
 ```ini
@@ -423,8 +419,9 @@ SNTP=pool.ntp.org
 | `PCODE` | Enable PCode Card emulation | `PCODE=1` |
 | `MYARC` | Enable Myarc RAM emulation (512K) | `MYARC=1` |
 | `RAMBO` | Enable SAMS RAM at >4000 when DSR ROM disabled | `RAMBO=1` |
-| `PLAYT` | PlayThing ROM/RAM enable | `PLAYT=1` |
-
+| `PLAYT` | PlayThing ROM/RAM enable (DSR Testing Only) | `PLAYT=1` |
+| `PLAYT` | PlayThing ROM/RAM enable (Serial) | `PLAYT=2` |
+| `PLAYT` | PlayThing ROM/RAM enable (Wifi) | `PLAYT=3` |
 ---
 
 ## 🎛 Performance Timing Controls
@@ -472,7 +469,8 @@ Forti Sound is ONLY available using a Bluetooth Speaker, it is not mixed into th
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| `IDE` | Enable IDE emulation | `IDE=1` |
+| `IDE` | Disable IDE emulation | `IDE=-1 or Remove IDE from the Autoload.cfg` |
+| `IDE` | Enable IDE emulation (Use 0 thru D to select CRU Address) | `IDE=1` |
 | `HARDDISK1` | First IDE image file | `HARDDISK1=harddisk1.dat` |
 | `HARDDISK2` | Second IDE image file | `HARDDISK2=harddisk2.dat` |
 
@@ -633,9 +631,10 @@ The IDE emulation replicates Myarc-style hard disk functionality for compatible 
 
 ## 📂 File Structure on USB
 
-Format the USB drive **exFAT** (recommended). RAW devices are also supported; FAT32 has worked in some tests.
+Format the USB drive **exFAT** (recommended). RAW devices are also supported.
 
-> Note: The **MicroSD** card used for the PPEB must be FAT32 (MBR). The **USB** drive used for IDE images can be exFAT (recommended) or RAW; FAT32 has also worked in tests.
+
+
 
 ```bash
 /
@@ -707,7 +706,7 @@ HARDDISK1=harddisk1.dat
 
 - The IDE interface works fully in conjunction with TIPI, SAMS, Myarc RAM, and DSR functions.
 - Only one USB memory stick may be used for IDE storage per session.
-- The USB drive is hot-plug capable only if properly unmounted beforehand.
+- You don't need to unmount the USB stick, just don't pull it out while you're using it.
 
 ---
 
@@ -725,7 +724,7 @@ This section summarizes each advanced subsystem available once fully configured.
 
 ## 🔧 SAMS Memory Expansion
 
-- Fully supports 1MB or 8MB SAMS configurations.
+- Fully supports 2MB or 8MB SAMS configurations.
   - On dual-PSRAM boards, SAMS paging up to **8 MB** is supported and has been exercised in demos/utilities; single-PSRAM boards support **2 MB**.
 Notes:
   - Most classic software was written for ≤1 MB, but newer builds/demos use >1 MB.
@@ -734,7 +733,7 @@ Notes:
 - Uses external PSRAM modules connected to Pico W.
 - Activated automatically when present.
 - SAMS memory functions as expanded RAM for compatible software.
-- Works with Geneve emulation, FinalGROM99, RXB, Myarc DOS, UCSD PCode, etc.
+- Works with FinalGROM99, RXB, Myarc DOS, UCSD PCode, etc.
 
 ---
 
@@ -767,7 +766,7 @@ CALL MYARCOF
 
 ```ini
 PLAYT=0 (Off)
-PLAYT=1 (On, but with no interface to Serial/WiFi - just a 4KB RAM DSR for testing stuff)
+PLAYT=1 (On, but with no interface to Serial/WiFi - just a 4KB RAM CRU for testing stuff)
 PLAYT=2 (On, with an interface to Serial - set MODE and BAUD for this to work)
 PLAYT=3 (On, with an interface to WiFi - no need to set MODE and BAUD)
 ```
@@ -918,8 +917,9 @@ BTJ1=01:23:45:67:89:AB
 ```
 
 - Devices must be paired externally (e.g. via Windows/Linux) to obtain MAC.
-
+- Use the CALL UNMOUNT command in basic to save the Bluetooth config.
 - Once bound, PPEB reconnects automatically at startup.
+
 ---
 
 # Troubleshooting Guide <a name="troubleshooting-guide"></a>
@@ -1119,7 +1119,7 @@ STL file design for printable enclosures
 | `BTKM2` | MAC Addr | Bluetooth Mouse | *(none)* |
 | `BT5KB` | MAC Addr | Bluetooth 5-key Keyboard | *(none)* |
 | `BTSPK` | MAC Addr | Bluetooth Speaker | *(none)* |
-| `IDE` | 0 or 1 | Enable IDE emulation | 0 |
+| `IDE` | -1 or (Use 0 thru D to select CRU Address)  | Enable IDE emulation | -1 |
 | `HARDDISK1` | Filename | IDE image 1 | *(none)* |
 | `HARDDISK2` | Filename | IDE image 2 | *(none)* |
 | `PI.CLOCK` | 0 or 1 | Enable SNTP clock sync | 1 |
@@ -1132,7 +1132,6 @@ STL file design for printable enclosures
 
 - Parameters may be freely omitted if not used — defaults will apply.
 - File paths are relative to SD root unless using full directory trees.
-- Paths are case-sensitive depending on SD card formatting.
 - MAC addresses for Bluetooth fields use uppercase `HH:HH:HH:HH:HH:HH` format.
 - CART2 adds a Review Module Library entry on the TI title screen; CART3 is not implemented due to memory constraints (thread page 47)
 ---
@@ -1197,8 +1196,6 @@ NOPSW=5
 
 - Lower `MHZ` values slow Pico clock speed for stability.
 - `NOPS` and `NOPSW` introduce deliberate read/write delays.
-- Use the memory test tool after adjustments to confirm stability before flashing final PPEB firmware.
-
 ---
 
 ### 📝 Test Recommendations
