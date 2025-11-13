@@ -766,7 +766,7 @@ CALL MYARCOF
 
 ```ini
 PLAYT=0 (Off)
-PLAYT=1 (On, but with no interface to Serial/WiFi - just a 4KB RAM CRU for testing stuff)
+PLAYT=1 (On, but with no interface to Serial/WiFi - just a 4KB RAM DSR for testing stuff)
 PLAYT=2 (On, with an interface to Serial - set MODE and BAUD for this to work)
 PLAYT=3 (On, with an interface to WiFi - no need to set MODE and BAUD)
 ```
