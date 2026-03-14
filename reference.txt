@@ -1,15 +1,3 @@
-[Revision September 2025 - JasonACT]
-Pi Pico[W] Peripheral Expansion Box Side Port Device:
-
-Licence:
-This device must not be sold as a commercial product, it must not be "passed on" with the speech synthesizer enabled (which is GPL code, only owner-builders should enable this).
-The Pico in this device is being pushed beyond its OEM limitations in 3 ways:
-1/ It needs to be overclocked to 250MHz (which is a fairly safe thing to do)
-2/ It is connected directly to some 5v TTL (74LS...) outputs on the TI bus (which is said to be fairly safe)
-3/ I don't bother to add caps everywhere they may be needed, simpler to build, but not so professional, important capacitors are specified though.
-Since it's all a bit out of spec. it needs to remain as a hobby device, assembled by the end user, who understands all the risks.
-And most importantly, the famous line quoted in many TI things on the web... "I made no money from this, so why should you?"
-
 IMPLEMENTED: (Mostly in the order done)
 .Board in the size and shape of a real TI Speech Synthesizer
 .Speech Synthesizer implementation using PWM
@@ -45,14 +33,21 @@ IMPLEMENTED: (Mostly in the order done)
 .ForTI sound card emulation using a connected BT speaker
 .Bluetooth Gamepads (joystick 1 and 2 specified by the 6 byte BT device address)
 .Bluetooth Keyboard & Mouse (ditto^^)
-.Console Tester
-.Reset Switch (LOAD int)
-.Debugger Card
-.IDE Card
-.SPEECH/ALPHON Text to Speech
+.Console Tester (plus a bootlogger [boot disassembly] via a 2nd separate firmware)
+.Reset Switch (via the LOAD int) - Can be configured to enter the PPEB menu from most places
+.Debugger Card (Single Step Card)
+.IDE Card (USB)
+.SPEECH/ALPHON Text to Speech (identical to TEII speech, but available to cartridge Ext Basic[s])
+.Sid Master 99 (USB - 2nd Pico/Pico2/W required)
+.File Transfer mechanism to back-up/restore/update the SD card in a running TI
+.CS3 1200 BAUD cassette interface (uses the CS1 hardware)
+.Map Joystick 1 & 2 Buttons (2, 3 and 4 etc.) to Keyboard Keys
+.Real Floppy Disk Interface (USB - 2nd Pico2/W required)
+.Console GROM emulation (for removing all 3 GROMS from a console) - bad GROM? V2.2 GROM?  You're covered, remove all 3.
+.grommy2 interface to flash memory and 4 banks of console GROM + failsafe(s)
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-Uses 1 Pico PIO state machine to squeeze the most out of PSRAM, the Pico[W] needs to run at 250MHz to get the 125MHz PSRAM clock right.
+Uses 2 Pico PIO state machines to squeeze the most out of PSRAM, the Pico[W] needs to run at 250MHz to get the 125MHz PSRAM clock right.
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 DSR Concept:
@@ -112,9 +107,10 @@ NB: The MAME .ZIP / .RPK archive loader requires about 84KB of free RAM to funct
 NB: The supplied BLNK.DSK is a small 2 sector disk image that can be used with the "BLNK.DSK,RO" command to format a temporary empty 400KB RAM DISK (only ever use ",RO" with this file)
 NB: For ",RO" RAM DISKs, MAP1..MAP9 can specify a new DSK file with "xxx.DSK,RR" which will take the existing RAM contents and write ('R'estore) it to the new file (overwrites old files)
 
-The CD Card root file: /autoload.cfg can be used to set start up defaults:
+The SD Card root file: /autoload.cfg can be used to set start up defaults:
 cru_base    "CRU="   (the card offsets starts at >1000, this parameter is a single digit 0-9, A-D [E & F are reserved] - Note: the default CRU base is specified by DSR1_CRU below for >1100)
 baudrate    "BAUD="  (override the default single BAUD rate we allow for the RS232 / DEBUG Pico serial port)
+serial mode "MODE="  (Default: 8N1 - see below)
 wificntrycd "WFCC="  (See below for 2 char codes, do not change this frequently, it will wear out the flash memory page, also requires a power-cycle when first setting up or changing)
 wifissid    "WIFI="  (to connect to a WiFi network, this is the network name)
 password    "PASS="  (your password)
@@ -130,10 +126,11 @@ filename    "CART=", "CART2=", "CART3=", etc. to autoload command modules (..2 o
 MM RAM ENAB "MMEM="  (0=off, 1=on, default is off)
 MM 8/4K RAM "MMMD="  (0=8KB, 1=4KB, default is 8KB)
 pcode-on    "PCODE=" (0=off, 1=on, default is off)
-Myarc mode  "MYARC=" (0=off, 1=on, default is off)
+Myarc mode  "MYARC=" (0=off, 1=on, default is off.. 2=1024KB [Max for 2MB SAMS], 3=2048KB, 4=4096KB)
 Pico Speed  "MHZ="   (The pico starts at a fixed speed [as set in Arduino] but can be dynamically adjusted using this setting - limited to even values between '250' and '280' MHz)
 Pico NOPs   "NOPS="  (The number of NOP instructions to use for the delay between a memory access [*MEMEN] and starting to read the address lines - valid value ranges from 1 to 9)
 Pico NOPs2  "NOPSW=" (After a write instruction, when the *WE signal goes back to high, this allows different delay time before restarting the loop.. default 5, valid values 1..9)
+FPY Drive   "FPYD="  (See next item)
 USB Drive   "USBD="  (If a USB memory stick is inserted, this DSKx number will be temporarily overridden - a value from 1 to 9)
 PIO Sound   "PSNDO=" (=1 means turn on this feature)
 BT Joystick "BTJ1="  (Specified in the hex format HH:HH:HH:HH:HH:HH  ---> Specifying BTJ1 in the config file prevents a USB GamePad from being Joystick 1)
@@ -149,24 +146,64 @@ ForTI Sound "FORTI=" (Sound gets sent to a BT Speaker - with the following optio
                       =3 means all 4 chips emulated - BT Speaker plays in mono)
 SAMS RAMBO  "RAMBO=" (=1 turns on SAMS RAM at >4000 when no DSR ROM is enabled)
 PlayThing   "PLAYT=" (=1 turns on ROM/RAM at CRU >1D00)
-The IDE Card "IDE="  (=1 turns on the IDE card at CRU > 1200 - Supports exFAT image files, or RAW devices)
-             "HARDDISK1=" (Master IDE image file, if not using a RAW device)
-             "HARDDISK2=" (Slave  IDE image file, if not using a RAW device)
+IDE Card    "IDE="  (=1 turns on the IDE card at CRU > 1200 - Supports exFAT image files, or RAW devices)
+            "HARDDISK1=" (Master IDE image file, if not using a RAW device)
+            "HARDDISK2=" (Slave  IDE image file, if not using a RAW device)
 ConsoleTester "TSTR=" (=1 turns on the Console Tester, file "constest.rom" is provided)
-LOAD int    "KBLOAD=" (=1 turns on <CTRL><ALT><PAUSE> as the LOAD interrupt button
+LOAD int    "KBLOAD=" (=1 turns on <CTRL><ALT><PAUSE> as the LOAD interrupt button)
 RESET       "RESET=1" (Turns the 'normally' TX serial pin into an input, reset the TI and reload the default cart image)
+            "RESET=2" (On button press: Snapshot and enter PPEB menu, pressing BACK does a snapshot restore)
 SPEECH      "SPEECH=1"(Turns on the SPEECH device [Terminal Emulator II] for the text to speech DSR functions SPEECH and ALPHON)
 TIMESTAMPS  "TIMEST=1"(Turns on 146 byte length directory records, default is 0 which is the standard 38 byte length records, =2 makes timestamps 2 digit years)
 SID         "SID=1"   (Turns on the Sid Master 99 device)
+CartMenus   "MENUS=1" (Turns on the cartridge menu lookup for all carts, not just PHM filenames)
+No Speech   "NOSYNTH=1" (Turns off the speech synthesizer)
+FileTransfer "XFER=192.168.0.100:1000" (The machine:port to connect to in the AID menu to transfer files to/from the SD card)
+Menu Margin "MARGIN=" (Can be 1 or 2, to shift the PPEB menu selection to the right for badly configured screens)
+Map Joy Btn "JOY11="  ..
+            "JOY12="  ..
+            "JOY13="  ..
+            "JOY14="  ..
+            "JOY19="  ..
+            "JOY10="  .. (Joystick 1, button 10)
+            "JOY21="  ..
+            "JOY22="  ..
+            "JOY23="  ..
+            "JOY24="  (Maps buttons to 'letter' on the keyboard - E.G. SPACE/ENTER or main key symbol)
+            "JOY29="  ..
+            "JOY20="  .. (Joystick 2, button 10)
+GROMS       "GROMS="  (Sets the "EEPROM location 2-5" to 1="GROM", 2="GR22", 3..="GRM0".."GRM4" (4=failsafe) which enables Console GROM emulation on the next boot)
 
 CRU Map:
     >1000 = PicoPEB DSK (if selected via CRU=0 config, FILES left to card @>1100)
     >1100 = PicoPEB DSK (default, FILES=3)
     >1200 = IDE Card (can be set to any below >1E, IDE=0 to IDE=D)
     >1300 = RS232 Card for Digi-Port emulation (no real RS232 stuff here, so is compatible with a real card)
-    >1D00 = PlayThing (not enabled - see below)
+    >1D00 = PlayThing
     >1E00 = SAMS Card
     >1F00 = PCode Card
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Serial Mode: (MODE=)
+
+PARITY_EVEN   0x001
+PARITY_ODD    0x002
+PARITY_NONE   0x003
+PARITY_MARK   0x004
+PARITY_SPACE  0x005
+
+STOP_BIT_1    0x010
+STOP_BIT_1_5  0x020
+STOP_BIT_2    0x030
+
+DATA_5        0x100
+DATA_6        0x200
+DATA_7        0x300
+DATA_8        0x400
+
+I.E. 8N1 = 0x413, converted to decimal MODE=1043
+     8E1 = 0x411, converted to decimal MODE=1041
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
@@ -183,24 +220,3 @@ CHINA          CN    HUNGARY   HU    LUXEMBOURG    LU    POLAND      PL    TAIWA
 COLOMBIA       CO    ICELAND   IS    MALAYSIA      MY    PORTUGAL    PT    THAILAND     TH
 CZECH_REPUBLIC CZ    INDIA     IN    MALTA         MT    SINGAPORE   SG    TURKEY       TR
 DENMARK        DK    ISRAEL    IL    MEXICO        MX    SLOVAKIA    SK    UK           GB    USA  US
-
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
-8MB PSRAM Memory Map (SAMS configured for 1MB and PCODE is enabled)
-
-   1MB      2MB      3MB      4MB      5MB      6MB      7MB      8MB
- ________ ________ ________ ________ ________ ________ ________ ________
-|  SAMS  |  ROM-->|------->|----->GROM->|DSK9| DSK876 | DSK543 | DSK21 || <-- last small gap = 64KB PCode Card GROMs + its 8KB ROM
-|________|________|________|________|___|____|________|________|_______||
-
-ROMs can be loaded into the GROM and DSK Cache space (if GROM/DSK are not being used) for an extra large Command Module
-GROMs expand 'backwards' into ROM space as the number of Command Modules #defined below increases (only Cart 0 uses PSRAM for ROMs)
-DSK space is only used when mapping sector based .DSK files, and when the special filename modifiers are specified for caching.
-
-When PROTECTGROMS == 1 the map changes slightly: (here we are showing SAMS configured as 2MB)
-
-   1MB      2MB      3MB      4MB      5MB      6MB      7MB      8MB
- ________ ________ ________ ________ ________ ________ ________ ________
-|  SAMS--|------->|ROM-----|--------|->|DSK9 | DSK876 | DSK543 | DSK21||| <-- last small gap = 64KB PCode Card GROMs + its 8KB ROM
-|________|________|________|________|__|_____|________|________|______||| <-- 2nd last gap = Cart GROM, 1=40KB, 2=80KB, 3=120KB etc.
- 
