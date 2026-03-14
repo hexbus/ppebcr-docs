@@ -494,6 +494,32 @@ Do not change this frequently, it will wear out the flash memory page, also requ
 (When changing the .cfg file to a new value, power-up the TI and wait for the title screen, then power-down and power-up again.)
 ---
 
+
+## 🔧 Grommy 2 Emulation
+
+This option can replace the original GROM chips inside the ti99/4a itself.  
+
+To use the new GROMMY2 modes, you will need to program banks 0-3 yourself.  
+Use the GROMS=1, GROMS=2 (V2.2) or GROMS=7 (Gary's modified for a 9938) to do the inital programming.
+
+PPEB GROMMY2 modes:
+
+
+| Parameter | Description |
+|-----------|-------------|
+|GROMS=0 |Off
+|GROMS=1 |Original
+|GROMS=2 |V2.2
+|GROMS=3 |GROMMY2 - bank 0
+|GROMS=4 |GROMMY2 - bank 1
+|GROMS=5 |GROMMY2 - bank 2
+|GROMS=6 |GROMMY2 - bank 3
+|GROMS=7 |GROMMY2 - failsafe
+
+--- 
+
+
+
 ## 💾 File System & Drive Mapping
 
 | Parameter | Description | Example |
