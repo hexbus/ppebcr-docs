@@ -440,6 +440,7 @@ SNTP=pool.ntp.org
 | `TMFT` | Date format: `0`=US, `1`=AU | `TMFT=0` |
 | `NOSYNTH` | Turns Off Speech Synth Emulation | `NOSYNTH=1` |
 | `SPEECH`  | Turns on the SPEECH device [Terminal Emulator II] for the text to speech DSR functions SPEECH and ALPHON| `SPEECH=1`|
+| `FYPD` | Enable Special Pico driven USB Floppy Drive (See next item) | `FPYD=1` |   
 | `USBD` |  If a USB memory stick is inserted, this DSKx number will be temporarily overridden,value from 1 to 9 | `USBD=2` |
 | `CART`| CART=, CART2=, CART3=, etc. to autoload command modules | 'CART=PICOPEB` |
 | `MENUS`| Turns on the cartridge menu lookup for all carts, not just PHM filenames | `MENUS=1`|
