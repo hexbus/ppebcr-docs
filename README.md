@@ -1,7 +1,7 @@
 # PPEB (formal name: Pi Pico W Peripheral Expansion Box Side Port Device)  
-*Complete Build & User Manual — TI-99/4A Sideport Expansion* - Last update 10/27/2025
+*Complete Build & User Manual — TI-99/4A Sideport Expansion* - Last update 03/14/2026
 
-### Wherever possible, we use [reference.txt](https://github.com/hexbus/ppebcr-docs/blob/main/reference.txt) as the authoritative source, with the [AtariAge thread](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/) as a secondary reference. This is a living, community-maintained doc—PRs and issue reports to fix mistakes are welcome.
+### Wherever possible, we use [reference.txt](https://github.com/dabonetn/ppebcr-docs/blob/main/reference.txt) as the authoritative source, with the [AtariAge thread](https://forums.atariage.com/topic/358129-pi-picow-peripheral-expansion-box-side-port-device/) as a secondary reference. This is a living, community-maintained doc—PRs and issue reports to fix mistakes are welcome.
 
 > *(Click any section below to jump directly to that part of the manual.)*
 # 📑 Table of Contents
@@ -30,18 +30,61 @@
 [**PPEB**] is a fully integrated, all-in-one expansion solution for the TI-99/4A home computer.  
 Built around the Raspberry Pi Pico W, it recreates multiple expansion cards and peripherals inside one modern sideport device:
 
-- Speech Synthesizer (PWM Emulated)
-- 32K RAM Expansion
-- SAMS Memory (up to 8 MB on dual-PSRAM boards; 2 MB on single-PSRAM)
-- Myarc RAM (512K)
-- Cartridge GROM/GRAM loader
-- Disk Controller with .DSK sector image support
-- IDE Hard Disk Emulation via USB stick
-- TIPI Extensions Compatibility
-- USB Keyboard, Mouse, Joystick, Bluetooth HID support
-- Math Co-Processor for accelerated floating-point math
-- Digi-Port 8-bit audio output support
-- RS232 Serial Support (physical 3.3 V UART on 2 MB boards; TCP/IP socket on all builds; physical not supported on 8 MB boards).
+- Board in the size and shape of a real TI Speech Synthesizer
+- Speech Synthesizer implementation using PWM
+- 32KB Expanded Memory (using Pico memory if desired, but also PSRAM that can implement SAMS, see below...)
+- DSR RAM/ROM Memory - 4KB ROM area + 5 * paged 4KB (20KB) RAM areas in >5000=>5FFF
+- GRAM/GROM Cartridge + Multi-bank RAM/ROM, E.G. 40KB GROM & 16KB+ ROM (+MiniMem-RAM) +++ PSRAM expands this considerably
+- Load   Interrupt Capable (Used to enable the USB subsystem [keyboard & joystick])
+- ExtInt Interrupt Capable (Used to enable RS232 non-blocking reads)
+- USB Keyboard Interface "<ALT>=" is the normal TI-99 reset, but <CTRL><ALT>DEL can perform a full reset if <ALT>'=' has been locked out,
+- USB Keyboard Interface  <CTRL><ALT>F11 is a keyboard to joystick toggle (enables TAB and Arrow keys as a joystick), <CTRL><ALT>F12 is a keyboard-state reset, should keys get stuck
+- USB Joystick Interface (4 way Hat switch & 4 buttons + includes 1 analog stick converted to digital)
+- USB Mouse interface - TIPI style which can also do Mechatronics style using the available TIPI drivers
+- DSK/x - Via the SD Card, including listing directories w/o the 127 file limit
+- RAW File read and write support (these work with sectors, but are not direct sector I/O)
+- PIO - List to SD Card text-file (/spool.txt)
+- Using TCP/IP & standard time-server to set the Pico clock for proper file system timestamps
+- SAMS Memory Expansion, using a PSRAM chip, size configurable at build-time
+- RS232 - Via Pico's free Serial2 port.  Uses a fixed BAUD rate, see below in the defines, .cfg file can override
+- PI.CLOCK - WiFi on the Pico W - Special read-only file (set via a NTP time-server mentioned above) also defined as just 'CLOCK'
+- Sockets - WiFi on the Pico W - RS232/2 - port:2322 (Server socket - with single client auto-connect)
+- Sockets - WiFi on the Pico W - PI.TCP=... (a single Client-Only socket)
+- Sockets - WiFi on the Pico W - Extension-TCP (a single Client-Only socket)
+- DSK1 automap when E.G. CALL TIPI("/x/y/DSK1ea/TIEA") loads a module (TI E/A here) from a path with a "last" path component starting with "DSK1" - which gets automapped
+- Math Co-Processor implements faster Add (and Sub) Multiply and Divide for Radix-100 floating point numbers (requires USB subsystem)
+- PCode Card, with "PCode.ROM", "PCode.GRM" in the SD Card's root, must be 12KB & 62KB (or 64KB) merged G/ROM dumps
+- mydisk.DSK sector-dump disk images mapped via CALL MAP1...MAP9 accessed via a special build of the TI Disk Controller Card's DSR ROM (needed for PCode usage, but generally useful)  
+  (Note 1: The TI Disk Controller Card's DSR requires sector image file names to end with ".DSK" to be properly detected otherwise SD Card directories are assumed)  
+  (Note 2: Mapping a track-dump .DSK file may [or may not] work but it will be converted to a RAM DISK [read only] but can be converted to a sector dump file by the ",RR" postfix)  
+- Action-Reply (VDPREGS - because recording them was important to the implementation) <CTRL><ALT>Print-Screen to save, <CTRL><ALT>Win-Menu to restore (Doesn't support SAMS or PCODE)
+- Myarc 512KB RAM [switchable] (turns off SAMS to reuse its memory and CRU base - I.E. A Foundation card @ CRU >1E00)
+- A USB Memory Stick will mount as a DSK device (DSK3 by default) for a single directory device
+- Digi-Port emulation for sound, if the speech synth is enabled
+- ForTI sound card emulation using a connected BT speaker
+- Bluetooth Gamepads (joystick 1 and 2 specified by the 6 byte BT device address)
+- Bluetooth Keyboard & Mouse (ditto^^)
+- Console Tester (plus a bootlogger [boot disassembly] via a 2nd separate firmware)
+- Reset Switch (via the LOAD int) - Can be configured to enter the PPEB menu from most places
+- Debugger Card (Single Step Card)
+- IDE Card (USB)
+- SPEECH/ALPHON Text to Speech (identical to TEII speech, but available to cartridge Ext Basic[s])
+- Sid Master 99 (USB - 2nd Pico/Pico2/W required)
+- File Transfer mechanism to back-up/restore/update the SD card in a running TI
+- CS3 1200 BAUD cassette interface (uses the CS1 hardware)
+- Map Joystick 1 & 2 Buttons (2, 3 and 4 etc.) to Keyboard Keys
+- Real Floppy Disk Interface (USB - 2nd Pico2/W required)
+- Console GROM emulation (for removing all 3 GROMS from a console) - bad GROM? V2.2 GROM?  You're covered, remove all 3.
+- grommy2 interface to flash memory and 4 banks of console GROM + failsafe(s)
+
+
+
+
+
+
+
+
+
   
 <br>
 
@@ -385,15 +428,98 @@ SNTP=pool.ntp.org
 | Parameter | Description | Example |
 |-----------|-------------|---------|
 | `CRU` | CRU base offset for DSR (TI-99 sideport address base) | `CRU=1` (→1100h) |
+| `RESET` | Enable Reset Button 1 for Default Cart / 2 for Snapshot and Enter PPEB Menu | `RESET=1` |
 | `BAUD` | RS232 baud rate override | `BAUD=9600` |
+| `MODE` | RS232 mode, Default 8,N,1 | `MODE=1043` |
+| `WFCC` | WiFi Country Code | `WFCC=XX` |
 | `WIFI` | WiFi SSID name | `WIFI=YourSSID` |
 | `PASS` | WiFi password | `PASS=YourPassword` |
 | `SNTP` | Time server (NTP hostname) | `SNTP=pool.ntp.org` |
 | `TZHR` | Timezone offset (hours) | `TZHR=-5` |
 | `TZMN` | Timezone offset (minutes) | `TZMN=0` |
 | `TMFT` | Date format: `0`=US, `1`=AU | `TMFT=0` |
+| `NOSYNTH` | Turns Off Speech Synth Emulation | `NOSYNTH=1` |
+| `SPEECH`  | Turns on the SPEECH device [Terminal Emulator II] for the text to speech DSR functions SPEECH and ALPHON| `SPEECH=1`|
+| `FYPD` | Enable Special Pico driven USB Floppy Drive (See next item) | `FPYD=1` |   
+| `USBD` |  If a USB memory stick is inserted, this DSKx number will be temporarily overridden,value from 1 to 9 | `USBD=2` |
+| `CART`| CART=, CART2=, CART3=, etc. to autoload command modules | 'CART=PICOPEB` |
+| `MENUS`| Turns on the cartridge menu lookup for all carts, not just PHM filenames | `MENUS=1`|
+| `TSTR`| Turns on the Console Tester, file "constest.rom" is provided | `TSTR=1` |
+| `KBLOAD`| Turns on [CTRL][ALT][PAUSE] as the LOAD interrupt button | `KBLOAD=1` |
+| `TIMEST`| Turns on 146 byte length directory records, default is 0 which is the standard 38 byte length records, =2 makes timestamps 2 digit years | `TIMEST=1`|
+| `SID`| Turns on the Sid Master 99 device | `SID=1`
+| `XFER`| The machine:port to connect to in the AID menu to transfer files to/from the SD card. | `XFER=192.168.0.100:1000` |
+| `MARGIN` | Shift the PPEB menu selection to the right for badly configured screens, Can be 1 or 2 | `MARGIN=1`|
+| `GROMS` |Sets the "EEPROM location 2-5" to 1="GROM", 2="GR22", 3..="GRM0".."GRM4" (4=failsafe) which enables Console GROM emulation on the next boot | 'GROMS=4'|
 
+
+## Serial Mode Settings: (MODE=)
+
+PARITY_EVEN   0x001  
+PARITY_ODD    0x002  
+PARITY_NONE   0x003  
+PARITY_MARK   0x004  
+PARITY_SPACE  0x005  
+
+STOP_BIT_1    0x010  
+STOP_BIT_1_5  0x020  
+STOP_BIT_2    0x030  
+
+DATA_5        0x100  
+DATA_6        0x200  
+DATA_7        0x300  
+DATA_8        0x400  
+
+I.E.  
+8N1 = 0x413, converted to decimal MODE=1043  
+8E1 = 0x411, converted to decimal MODE=1041  
+
+# WiFi Country Codes  
+Do not change this frequently, it will wear out the flash memory page, also requires a power-cycle when first setting up or changing.
+
+| Country | Code |Country | Code |Country | Code |Country | Code |Country | Code |
+|----------------|--|----------------|--|----------------|--|----------------|--|----------------|--|
+|`WORLDWIDE`      |`XX`|`Default`
+|`AUSTRALIA`      |`AU`|`ESTONIA`   |`EE`|`ITALY`        |`IT`|`NETHERLANDS`|`NL`|`SLOVENIA`    |`SI`|
+|`AUSTRIA`        |`AT`|`FINLAND`   |`FI`|`JAPAN`        |`JP`|`NEW_ZEALAND`|`NZ`|`SOUTH_AFRICA`|`ZA`|
+|`BELGIUM`        |`BE`|`FRANCE`    |`FR`|`KENYA`        |`KE`|`NIGERIA`    |`NG`|`SOUTH_KOREA` |`KR`|
+|`BRAZIL`         |`BR`|`GERMANY`   |`DE`|`LATVIA`       |`LV`|`NORWAY`     |`NO`|`SPAIN`       |`ES`|
+|`CANADA`         |`CA`|`GREECE`    |`GR`|`LIECHTENSTEIN`|`LI`|`PERU`       |`PE`|`SWEDEN`      |`SE`|
+|`CHILE`          |`CL`|`HONG_KONG` |`HK`|`LITHUANIA`    |`LT`|`PHILIPPINES`|`PH`|`SWITZERLAND` |`CH`|
+|`CHINA`          |`CN`|`HUNGARY`   |`HU`|`LUXEMBOURG`   |`LU`|`POLAND`     |`PL`|`TAIWAN`      |`TW`|
+|`COLOMBIA`       |`CO`|`ICELAND`   |`IS`|`MALAYSIA`     |`MY`|`PORTUGAL`   |`PT`|`THAILAND`    |`TH`|
+|`CZECH_REPUBLIC` |`CZ`|`INDIA`     |`IN`|`MALTA`        |`MT`|`SINGAPORE`  |`SG`|`TURKEY`      |`TR`|
+|`DENMARK`        |`DK`|`ISRAEL`    |`IL`|`MEXICO`       |`MX`|`SLOVAKIA`   |`SK`|`UK`          |`GB`|
+|`USA`        |`US`|||||||||
+
+(When changing the .cfg file to a new value, power-up the TI and wait for the title screen, then power-down and power-up again.)
 ---
+
+
+## 🔧 Grommy 2 Emulation
+
+This option can replace the original GROM chips inside the ti99/4a itself.  
+
+To use the new GROMMY2 modes, you will need to program banks 0-3 yourself.  
+Use the GROMS=1, GROMS=2 (V2.2) or GROMS=7 (Gary's modified for a 9938) to do the inital programming.
+
+PPEB GROMMY2 modes:
+
+
+| Parameter | Description |
+|-----------|-------------|
+|GROMS=0 |Off
+|GROMS=1 |Original
+|GROMS=2 |V2.2
+|GROMS=3 |GROMMY2 - bank 0
+|GROMS=4 |GROMMY2 - bank 1
+|GROMS=5 |GROMMY2 - bank 2
+|GROMS=6 |GROMMY2 - bank 3
+|GROMS=7 |GROMMY2 - failsafe
+
+--- 
+
+
 
 ## 💾 File System & Drive Mapping
 
@@ -405,6 +531,7 @@ SNTP=pool.ntp.org
 | `CART` | Cartridge image to autoload | `CART=MyCart` |
 | `CART2` (CART3 not used) | Additional multi-bank cartridges | `CART2=AnotherCart` |
 | `USBD` | If a USB stick is present, map **that** device as `DSKx` (choose 1–9) | `USBD=1` (maps USB to DSK1) |
+
 
 - CART note: `CART2` adds a Review Module Library entry on the TI title screen; `CART3` is not implemented due to memory constraints. (thread page 47)
 
@@ -449,6 +576,24 @@ SNTP=pool.ntp.org
 Forti Sound is ONLY available using a Bluetooth Speaker, it is not mixed into the onboard sound of the TI.
 
 ---
+## 🕹 Joystick Button Remapping.
+
+You can remap joystick buttons (usb/bt) to keyboard keys.
+The format is  
+
+JOY12= through to "19=" & lastly "10=" <- joystick 1 button 2 to 10  
+
+JOY22= through to "29=" & lastly "20=" <- joystick 2 button 2 to 10  
+
+ =ENTER / =SPACE (whole word) or any letter / number / symbol (single character - being the main one listed on the key:  '=' '/' ';' ',' '.').  
+ You can't use the USB/BT keyboard at the same time as the joysticks when this is enabled in the config (it will get confused). 
+
+| Parameter | Description | Example |
+|-----------|-------------|---------|
+| `JOY12` | Map Joystick 1 Button two to A | `JOY12=A` |
+| `JOY14` | Map Joystick 1 Button four to Space | `JOY12=SPACE` |
+| `JOY22` | Map Joystick 2 Button two to A | `JOY22=A` |
+| `JOY24` | Map Joystick 4 Button four to Enter | `JOY24=ENTER` |---
 
 ## 🕹 Bluetooth Device Bindings
 
@@ -516,7 +661,8 @@ This section documents all supported `CALL` commands.
 | Command | Description |
 |---------|-------------|
 | `CALL PPEB` (or legacy `CALL TIPI`) | Launch the PPEB/TIPI-style menu browser — allows loading cartridges, modules, and configurations. |
-| `CALL UNMOUNT` | Cleanly unmount SD card before removal (remounts automatically on next access). |
+| `CALL TIPI' (or legacy `CALL TIPI`) ("/cartprefix")  | Loads GROM/ROM with a cartridge SD card image (C/D/8/-8/_8/_9/G), MAME .ZIP/.RPK (don't type .ext), or EA5 loader (TIFILES & no .ext). |
+| `CALL UNMOUNT` | Cleanly unmount SD card before removal (Also saves the bluetooth & IDE config, remounts automatically on next access). |
 
 ---
 
@@ -823,7 +969,29 @@ CALL PCODEOF
 
 > ⚠ Not a full TIPI replacement — designed as an integration layer.
 
+
+## 🔧 TI DSR Devices Available
+
+TI DSR Devices available:  
+
+| DSR | Description|
+|---------|-------|
+|TIPI| SD card root access  |
+|DSK|  SD card root access (allows access to disks via their name, if a directory in SD Root is that name, or a .DSK is mounted)  |
+|DSK1| /DSK1/ SD card access + AUTOMAP (all current maps survive a reset)  |
+|...|  |
+|DSK9| /DSK9/ SD card access  |
+|PIO|  spool.txt SD card access|  
+|PIO/1|spool.txt SD card access (same as above)  |
+|RS232| Pico serial port access  |
+|RS232/1| Pico serial port access (same as above)  |
+|RS232/2| Pico tcpip port:2322 access  |
+|PI| Currently, only PI.CLOCK as a read-only file & PI.TCP as a single client socket are implemented  |
+|CLOCK| Same as PI.CLOCK  |
+|SOCI|  RS232/2's socket for output, but socket input is directed into the special keyboard CRU input interface |
+ 
 ---
+  
 
 ## 🔧 RS232 Serial Interfaces: physical 3.3 V UART (single-PSRAM/2 MB build only) or TCP/IP socket (RS232/2) over Wi-Fi.
 
