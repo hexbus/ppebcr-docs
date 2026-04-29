@@ -77,12 +77,12 @@ Unzip the ExampleIDEImages.zip file and copy one or both of the files to your US
 
 Choose one of the following to add to your autoload.cfg
 
-IDE=1
+IDE=1  
 HARDDISK1=IMAGE1.dat
 
 or 
 
-IDE=1
+IDE=1  
 HARDDISK1=test.cf7
 
 
