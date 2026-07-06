@@ -448,7 +448,7 @@ SNTP=pool.ntp.org
 | `KBLOAD`| Turns on [CTRL][ALT][PAUSE] as the LOAD interrupt button | `KBLOAD=1` |
 | `TIMEST`| Turns on 146 byte length directory records, default is 0 which is the standard 38 byte length records, =2 makes timestamps 2 digit years | `TIMEST=1`|
 | `SID`| Turns on the Sid Master 99 device | `SID=1`
-| `XFER`| The machine:port to connect to in the AID menu to transfer files to/from the SD card. | `XFER=192.168.0.100:1000` |
+| `XFER`| The machine:port to connect to in the AID menu to transfer files to/from the SD card. **Full setup, workflow, and protocol: [XFER.md](XFER.md)** | `XFER=192.168.0.100:1000` |
 | `MARGIN` | Shift the PPEB menu selection to the right for badly configured screens, Can be 1 or 2 | `MARGIN=1`|
 | `GROMS` |Sets the "EEPROM location 2-5" to 1="GROM", 2="GR22", 3..="GRM0".."GRM4" (4=failsafe) which enables Console GROM emulation on the next boot | 'GROMS=4'|
 
@@ -1087,6 +1087,17 @@ BTJ1=01:23:45:67:89:AB
 - Devices must be paired externally (e.g. via Windows/Linux) to obtain MAC.
 - Use the CALL UNMOUNT command in basic to save the Bluetooth config.
 - Once bound, PPEB reconnects automatically at startup.
+
+---
+
+## 🔧 XFER — WiFi File Transfer (PC ↔ SD Card)
+
+- Transfers files between a PC and the SD card **over WiFi while the TI is running** — no card swapping. Send, retrieve, or list directories.
+- Requires firmware **2025-12-16 or later** and the `PPEB2_XFER` PC tool included in firmware releases (Windows `.exe` + portable C source).
+- Configure `XFER=<PC-IP>:10000` in `autoload.cfg`; run the tool on the PC, then trigger from the TI: `CALL PPEB` → **FCTN+7** (AID) → **T**.
+- A pushed cartridge (`.RPK`/`.ZIP`) is immediately loadable from the PPEB menu — enabling a full PC-compile → WiFi-push → run development loop on real hardware.
+
+**→ Full setup guide, workflow, gotchas, and wire protocol: [XFER.md](XFER.md)**
 
 ---
 
